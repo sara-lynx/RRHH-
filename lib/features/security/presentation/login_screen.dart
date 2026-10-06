@@ -11,6 +11,7 @@ class LoginScreen extends StatefulWidget {
   final AuthService? authService;
   final VoidCallback? onLoginSuccess;
   final VoidCallback? onToggleTheme;
+  final VoidCallback? onExploreDemo;
   final bool isDarkMode;
 
   const LoginScreen({
@@ -18,6 +19,7 @@ class LoginScreen extends StatefulWidget {
     this.authService,
     this.onLoginSuccess,
     this.onToggleTheme,
+    this.onExploreDemo,
     this.isDarkMode = false,
   });
 
@@ -430,6 +432,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
             ),
+            if (widget.onExploreDemo != null) ...[
+              const SizedBox(height: 10),
+              OutlinedButton.icon(
+                onPressed: widget.onExploreDemo,
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: BorderSide(
+                    color: isDark ? const Color(0xFF334155) : const Color(0xFFCBD5E1),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                icon: Icon(
+                  Icons.remove_red_eye_outlined,
+                  size: 16,
+                  color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                ),
+                label: Text(
+                  'Explorar Interfaz (Modo Vista Previa)',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? const Color(0xFFE2E8F0) : const Color(0xFF334155),
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 20),
 
             // Pie informativo

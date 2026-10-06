@@ -219,8 +219,18 @@ class _AppAuthGateState extends State<AppAuthGate> {
     }
   }
 
+  bool _previewMode = false;
+
   @override
   Widget build(BuildContext context) {
+    if (_previewMode) {
+      return SecurityShellScreen(
+        authService: widget.authService,
+        isDarkMode: widget.isDarkMode,
+        onToggleTheme: widget.onToggleTheme,
+      );
+    }
+
     final isSignedIn = client.auth.isAuthenticated;
     if (!isSignedIn) {
       return LoginScreen(
@@ -228,6 +238,7 @@ class _AppAuthGateState extends State<AppAuthGate> {
         isDarkMode: widget.isDarkMode,
         onToggleTheme: widget.onToggleTheme,
         onLoginSuccess: _refreshAuthState,
+        onExploreDemo: () => setState(() => _previewMode = true),
       );
     }
 
