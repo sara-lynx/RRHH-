@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Elite Multiservicios — Sistema Empresarial de Seguridad y Gestión">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Elite Multiservicios">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Elite Multiservicios — Sistema Empresarial</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Splash Screen CSS Inmediato (0ms First Paint) -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      background-color: #090D16;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    #app-splash-loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 30%, #0F172A 0%, #090D16 100%);
+      z-index: 999999;
+      transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .splash-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .splash-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.35);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.5px;
+    }
+    .splash-title {
+      color: #F8FAFC;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+    .splash-subtitle {
+      color: #64748B;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .splash-spinner {
+      margin-top: 28px;
+      width: 26px;
+      height: 26px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-top-color: #3B82F6;
+      border-radius: 50%;
+      animation: splash-spin 0.75s linear infinite;
+    }
+    @keyframes splash-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader visual que elimina el lienzo en blanco -->
+  <div id="app-splash-loader">
+    <div class="splash-brand">
+      <div class="splash-logo">EM</div>
+      <div style="text-align: center;">
+        <div class="splash-title">Elite Multiservicios</div>
+        <div class="splash-subtitle" style="margin-top: 4px;">Seguridad Corporativa</div>
+      </div>
+    </div>
+    <div class="splash-spinner"></div>
+  </div>
+
+  <script>
+    function removeSplash() {
+      var loader = document.getElementById('app-splash-loader');
+      if (loader && loader.style.opacity !== '0') {
+        loader.style.opacity = '0';
+        loader.style.pointerEvents = 'none';
+        setTimeout(function () {
+          if (loader && loader.parentNode) {
+            loader.parentNode.removeChild(loader);
+          }
+        }, 360);
+      }
+    }
+    // Remover splash screen cuando Flutter inicialice su primer render
+    window.addEventListener('flutter-first-frame', removeSplash);
+    // Fallback de seguridad: remueve el loader si el evento no llega a emitirse
+    setTimeout(removeSplash, 2500);
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
