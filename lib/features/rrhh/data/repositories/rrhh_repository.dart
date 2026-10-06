@@ -30,7 +30,7 @@ import 'rrhh_repository_remote.dart';
 /// Regla R1: La UI NO llama directamente a Serverpod, todo pasa por RrhhRepository.
 /// Regla R2: La UI NO conoce si el repository es mock o remoto.
 abstract class RrhhRepository {
-  /// Instancia global activa apuntando al backend real (Serverpod).
+  /// Instancia global activa apuntando al repositorio de RRHH.
   static RrhhRepository current = RrhhRepositoryRemote();
 
   /// Identifica si el repositorio está operando en modo Mock/Simulado.
