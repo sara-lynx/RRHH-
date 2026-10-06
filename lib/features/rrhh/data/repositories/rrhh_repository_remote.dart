@@ -17,14 +17,18 @@ import 'rrhh_repository.dart';
 /// Implementación remota del repositorio de RRHH conectada a Serverpod.
 /// Implementa los métodos del submódulo Personal (Directorio, Expediente, Reclutamiento, Dossier).
 class RrhhRepositoryRemote implements RrhhRepository {
+  /// Modo 100% autónomo y desacoplado de backend para ejecución frontend aislada
+  static bool useBackend = false;
+
   @override
-  bool get isMock => false;
+  bool get isMock => !useBackend;
 
   // ===========================================================================
   // PANTALLA 01: Dashboard Ejecutivo de RRHH
   // ===========================================================================
   @override
   Future<RrhhDashboardMetricsResponse> getDashboardMetrics() async {
+    if (!useBackend) return RrhhLocalStore.instance.getDashboardMetrics();
     try {
       return await app.client.rrhhDashboard.getMetrics();
     } catch (_) {
@@ -34,6 +38,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<List<RrhhRecentMovementDto>> getRecentMovements() async {
+    if (!useBackend) return RrhhLocalStore.instance.getRecentMovements();
     try {
       return await app.client.rrhhDashboard.getRecentMovements(limit: 10);
     } catch (_) {
@@ -56,6 +61,14 @@ class RrhhRepositoryRemote implements RrhhRepository {
     int? offset,
     String? availabilityStatus,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.listEmployees(
+        status: status,
+        employeeType: employeeType,
+        areaId: areaId,
+        search: search,
+      );
+    }
     try {
       return await app.client.rrhhPersonnel.listEmployeeSummaries(
         status: status,
@@ -80,6 +93,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 2. Obtiene un colaborador por su ID numérico.
   @override
   Future<RrhhEmployee> getEmployeeById(int id) async {
+    if (!useBackend) return RrhhLocalStore.instance.getEmployeeById(id);
     try {
       final employee = await app.client.rrhhPersonnel.getEmployeeById(
         id,
@@ -97,6 +111,14 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 3. Obtiene un colaborador por su código institucional (EMP-001).
   @override
   Future<RrhhEmployee?> getEmployeeByCode(String code) async {
+    if (!useBackend) {
+      final list = RrhhLocalStore.instance.listEmployees();
+      final match = list.where((e) => e.code == code).firstOrNull;
+      if (match != null) {
+        return RrhhLocalStore.instance.getEmployeeById(match.id);
+      }
+      return null;
+    }
     try {
       return await app.client.rrhhPersonnel.getEmployeeByCode(
         code,
@@ -110,6 +132,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 4. Registra un nuevo colaborador directamente en nómina.
   @override
   Future<RrhhEmployee> createEmployee(RrhhEmployee employee) async {
+    if (!useBackend) return RrhhLocalStore.instance.createEmployee(employee);
     try {
       return await app.client.rrhhPersonnel.createEmployee(employee);
     } catch (e) {
@@ -120,6 +143,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 5. Actualiza los datos laborales y personales de un empleado.
   @override
   Future<RrhhEmployee> updateEmployee(RrhhEmployee employee) async {
+    if (!useBackend) return RrhhLocalStore.instance.updateEmployee(employee);
     try {
       return await app.client.rrhhPersonnel.updateEmployee(employee);
     } catch (e) {
@@ -133,6 +157,9 @@ class RrhhRepositoryRemote implements RrhhRepository {
     required int? applicantId,
     required RrhhEmployee employeeData,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.createEmployee(employeeData);
+    }
     try {
       if (applicantId == null) {
         throw const RrhhRemoteException(
@@ -164,6 +191,16 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? accountType,
     String? accountNumber,
   }) async {
+    if (!useBackend) {
+      final emp = RrhhLocalStore.instance.getEmployeeById(id);
+      return RrhhLocalStore.instance.updateEmployee(
+        emp.copyWith(
+          bankName: bankName,
+          accountType: accountType,
+          accountNumber: accountNumber,
+        ),
+      );
+    }
     try {
       return await app.client.rrhhPersonnel.updateEmployeeBankInfo(
         id: id,
@@ -184,6 +221,16 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? afpNumber,
     String? healthInsurance,
   }) async {
+    if (!useBackend) {
+      final emp = RrhhLocalStore.instance.getEmployeeById(id);
+      return RrhhLocalStore.instance.updateEmployee(
+        emp.copyWith(
+          afpName: afpName,
+          afpNumber: afpNumber,
+          healthInsurance: healthInsurance,
+        ),
+      );
+    }
     try {
       return await app.client.rrhhPersonnel.updateEmployeeSocialSecurity(
         id: id,
@@ -207,6 +254,19 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? emergencyContactPhone,
     String? emergencyContactRelation,
   }) async {
+    if (!useBackend) {
+      final emp = RrhhLocalStore.instance.getEmployeeById(id);
+      return RrhhLocalStore.instance.updateEmployee(
+        emp.copyWith(
+          address: fullAddress,
+          maritalStatus: maritalStatus,
+          childrenCount: childrenCount,
+          emergencyContactName: emergencyContactName,
+          emergencyContactPhone: emergencyContactPhone,
+          emergencyContactRelation: emergencyContactRelation,
+        ),
+      );
+    }
     try {
       return await app.client.rrhhPersonnel.updateEmployeePersonalInfo(
         id: id,
@@ -237,6 +297,19 @@ class RrhhRepositoryRemote implements RrhhRepository {
     List<RrhhEmployeeBonus>? bonuses,
     List<RrhhEmployeeDeduction>? deductions,
   }) async {
+    if (!useBackend) {
+      final emp = RrhhLocalStore.instance.getEmployeeById(id);
+      return RrhhLocalStore.instance.updateEmployee(
+        emp.copyWith(
+          contractType: contractType,
+          paymentModality: paymentModality,
+          workScheduleType: workdayType,
+          realStartDate: contractStartDate,
+          contractEndDate: contractEndDate,
+          agreedSalary: baseSalary,
+        ),
+      );
+    }
     try {
       return await app.client.rrhhPersonnel.updateEmployeeContract(
         id: id,
@@ -262,6 +335,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     int id,
     List<RrhhEmployeeBonus> bonuses,
   ) async {
+    if (!useBackend) return RrhhLocalStore.instance.getEmployeeById(id);
     try {
       return await app.client.rrhhPersonnel.updateEmployeeBonuses(
         id: id,
@@ -278,6 +352,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     int id,
     List<RrhhEmployeeDeduction> deductions,
   ) async {
+    if (!useBackend) return RrhhLocalStore.instance.getEmployeeById(id);
     try {
       return await app.client.rrhhPersonnel.updateEmployeeDeductions(
         id: id,
@@ -296,6 +371,15 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? baseLocation,
     String? supervisorEmployeeId,
   }) async {
+    if (!useBackend) {
+      final emp = RrhhLocalStore.instance.getEmployeeById(id);
+      return RrhhLocalStore.instance.updateEmployee(
+        emp.copyWith(
+          workplace: baseLocation,
+          supervisor: supervisorEmployeeId,
+        ),
+      );
+    }
     try {
       return await app.client.rrhhPersonnel.updateEmployeeAssignment(
         id: id,
@@ -314,6 +398,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     int id,
     Map<String, String> documentChecklist,
   ) async {
+    if (!useBackend) return RrhhLocalStore.instance.getEmployeeById(id);
     try {
       final docList = documentChecklist.entries
           .map(
@@ -337,6 +422,21 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 15. Obtiene el resumen contractual para exposición a Contabilidad.
   @override
   Future<RrhhEmployeeContractData> getEmployeeContractData(int id) async {
+    if (!useBackend) {
+      final emp = RrhhLocalStore.instance.getEmployeeById(id);
+      return RrhhEmployeeContractData(
+        employeeId: emp.id ?? id,
+        fullName: emp.fullName,
+        code: emp.code,
+        status: emp.status,
+        contractType: emp.contractType,
+        baseSalary: emp.agreedSalary ?? 3500.0,
+        contractStartDate: emp.realStartDate,
+        contractEndDate: emp.contractEndDate,
+        paymentModality: emp.paymentModality,
+        workdayType: emp.workScheduleType,
+      );
+    }
     try {
       return await app.client.rrhhPersonnel.getEmployeeContractData(id);
     } catch (e) {
@@ -347,6 +447,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 16. Soft delete de un empleado en Nómina.
   @override
   Future<bool> deleteEmployee(int id) async {
+    if (!useBackend) return true;
     try {
       return await app.client.rrhhPersonnel.deleteEmployee(id);
     } catch (e) {
@@ -361,6 +462,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 17. Lista los documentos del expediente digital del colaborador.
   @override
   Future<List<RrhhEmployeeDocument>> listDocuments(int employeeId) async {
+    if (!useBackend) return const [];
     try {
       return await app.client.rrhhPersonnel.listDocuments(employeeId);
     } catch (e) {
@@ -373,6 +475,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   Future<RrhhEmployeeDocument> uploadEmployeeDocument(
     RrhhEmployeeDocument document,
   ) async {
+    if (!useBackend) return document;
     try {
       return await app.client.rrhhPersonnel.addDocument(document);
     } catch (e) {
@@ -383,6 +486,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 19. Elimina un documento del expediente digital.
   @override
   Future<bool> deleteEmployeeDocument(int documentId) async {
+    if (!useBackend) return true;
     try {
       return await app.client.rrhhPersonnel.deleteDocument(documentId);
     } catch (e) {
@@ -400,25 +504,28 @@ class RrhhRepositoryRemote implements RrhhRepository {
     DateTime? endDate,
     String? user,
   }) async {
-    try {
-      List<RrhhTimelineEvent> events = [];
-      if (employeeId != null && employeeId > 0) {
-        events = await app.client.rrhhPersonnel.listTimelineEvents(employeeId);
-      } else {
-        final emps = await app.client.rrhhPersonnel.listEmployees(
-          limit: 100,
-          offset: 0,
-          includeDeleted: false,
-        );
-        final all = <RrhhTimelineEvent>[];
-        for (final emp in emps) {
-          if (emp.id != null) {
-            final evs = await app.client.rrhhPersonnel.listTimelineEvents(emp.id!);
-            all.addAll(evs);
+    List<RrhhTimelineEvent> events = [];
+    if (useBackend) {
+      try {
+        if (employeeId != null && employeeId > 0) {
+          events = await app.client.rrhhPersonnel.listTimelineEvents(employeeId);
+        } else {
+          final emps = await app.client.rrhhPersonnel.listEmployees(
+            limit: 100,
+            offset: 0,
+            includeDeleted: false,
+          );
+          final all = <RrhhTimelineEvent>[];
+          for (final emp in emps) {
+            if (emp.id != null) {
+              final evs = await app.client.rrhhPersonnel.listTimelineEvents(emp.id!);
+              all.addAll(evs);
+            }
           }
+          events = all;
         }
-        events = all;
-      }
+      } catch (_) {}
+    }
 
       // Eventos enriquecidos del período activo para auditoría inmutable
       final now = DateTime.now();
@@ -537,14 +644,12 @@ class RrhhRepositoryRemote implements RrhhRepository {
         }
         return true;
       }).toList();
-    } catch (_) {
-      return const [];
-    }
   }
 
   /// 21. Agrega un hito inmutable a la línea de tiempo del empleado.
   @override
   Future<RrhhTimelineEvent> addTimelineEvent(RrhhTimelineEvent event) async {
+    if (!useBackend) return event;
     try {
       return await app.client.rrhhPersonnel.addTimelineEvent(event);
     } catch (e) {
@@ -576,6 +681,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhAssignment?> getCurrentAssignment(int employeeId) async {
+    if (!useBackend) return null;
     try {
       return await app.client.rrhhAssignment.getActiveAssignmentByEmployee(
         employeeId,
@@ -595,6 +701,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? status,
     String? search,
   }) async {
+    if (!useBackend) return RrhhLocalStore.instance.listApplicants();
     try {
       final applicants = await app.client.rrhhApplicant.listApplicants(
         status: status,
@@ -627,6 +734,22 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 23. Obtiene un postulante por su ID numérico.
   @override
   Future<RrhhApplicant> getApplicantById(int id) async {
+    if (!useBackend) {
+      final fallback = RrhhApplicant(
+        id: id,
+        code: 'POST-$id',
+        fullName: 'Postulante Seleccionado #$id',
+        identityCard: '6854129-LP',
+        phone: '+591 76543210',
+        targetType: 'OPERATIVO',
+        status: 'SELECCIONADO',
+        applicationDate: DateTime.now(),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+      RrhhDossierApplicantInfoRegistry.register(fallback);
+      return fallback;
+    }
     try {
       final applicant = await app.client.rrhhApplicant.getApplicantById(
         id,
@@ -664,6 +787,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     RrhhApplicant applicant, {
     RrhhApplicantCompanion? companion,
   }) async {
+    if (!useBackend) return applicant;
     try {
       return await app.client.rrhhApplicant.createApplicant(applicant);
     } catch (e) {
@@ -674,6 +798,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 25. Actualiza los datos de un postulante existente.
   @override
   Future<RrhhApplicant> updateApplicant(RrhhApplicant applicant) async {
+    if (!useBackend) return applicant;
     try {
       return await app.client.rrhhApplicant.updateApplicant(applicant);
     } catch (e) {
@@ -690,6 +815,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? discardReason,
     bool? isEligibleForRehire,
   }) async {
+    if (!useBackend) {
+      final cur = await getApplicantById(applicantId);
+      return cur.copyWith(status: newStatus);
+    }
     try {
       return await app.client.rrhhApplicant.updateApplicantStatus(
         id: applicantId,
@@ -705,6 +834,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 27. Soft delete de un postulante.
   @override
   Future<bool> deleteApplicant(int id) async {
+    if (!useBackend) return true;
     try {
       return await app.client.rrhhApplicant.deleteApplicant(id);
     } catch (e) {
@@ -947,6 +1077,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 28. Lista los expedientes de contratación activos.
   @override
   Future<List<RrhhHiringDossier>> listActiveDossiers() async {
+    if (!useBackend) return RrhhLocalStore.instance.listActiveDossiers();
     try {
       final dossiers = await app.client.rrhhHiring.listActiveDossiers(
         limit: 100,
@@ -971,6 +1102,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 29. Obtiene un expediente por su ID numérico.
   @override
   Future<RrhhHiringDossier?> getDossierById(int id) async {
+    if (!useBackend) return RrhhLocalStore.instance.getDossierById(id);
     try {
       return await app.client.rrhhHiring.getDossierById(id);
     } catch (_) {
@@ -981,6 +1113,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 30. Obtiene el expediente activo asociado a un postulante.
   @override
   Future<RrhhHiringDossier?> getDossierByApplicantId(int applicantId) async {
+    if (!useBackend) return RrhhLocalStore.instance.getDossierById(applicantId);
     try {
       return await app.client.rrhhHiring.getDossierByApplicantId(applicantId);
     } catch (_) {
@@ -991,6 +1124,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 31. Crea un nuevo expediente para un postulante seleccionado.
   @override
   Future<RrhhHiringDossier> createDossierForApplicant(int applicantId) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(applicantId) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       return await app.client.rrhhHiring.createDossier(applicantId);
     } catch (e) {
@@ -1005,6 +1142,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
     Map<String, RrhhDossierDocument> documents, {
     String? sectionStatus,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(id) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       final docList = documents.values.toList();
       final requiredDocs = docList.where((d) => d.isRequired);
@@ -1043,6 +1184,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? section2Notes,
     required String sectionStatus,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(id) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       return await app.client.rrhhHiring.updateDossierSection2(
         id: id,
@@ -1069,6 +1214,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? emergencyContactRelation,
     required String sectionStatus,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(id) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       return await app.client.rrhhHiring.updateDossierSection3(
         id: id,
@@ -1102,6 +1251,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
     List<RrhhEmployeeDeduction>? deductions,
     required String sectionStatus,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(id) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       return await app.client.rrhhHiring.updateDossierSection4(
         id: id,
@@ -1138,6 +1291,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
     DateTime? effectiveStartDate,
     required String sectionStatus,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(id) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       return await app.client.rrhhHiring.updateDossierSection5(
         id: id,
@@ -1163,6 +1320,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? approvedBy,
     required String sectionStatus,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(id) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       return await app.client.rrhhHiring.updateDossierSection6(
         id: id,
@@ -1178,6 +1339,10 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 38. Actualiza el estado global del expediente.
   @override
   Future<RrhhHiringDossier> updateDossierStatus(int id, String status) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getDossierById(id) ??
+          RrhhLocalStore.instance.listActiveDossiers().first;
+    }
     try {
       return await app.client.rrhhHiring.updateDossierStatus(
         id: id,
@@ -1194,6 +1359,9 @@ class RrhhRepositoryRemote implements RrhhRepository {
     int dossierId, {
     String? notes,
   }) async {
+    if (!useBackend) {
+      return RrhhLocalStore.instance.getEmployeeById(1);
+    }
     try {
       return await app.client.rrhhHiring.convertDossierToEmployee(dossierId);
     } catch (e) {
@@ -1204,6 +1372,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
   /// 40. Soft delete del expediente de contratación.
   @override
   Future<bool> deleteDossier(int id) async {
+    if (!useBackend) return true;
     try {
       return await app.client.rrhhHiring.deleteDossier(id);
     } catch (e) {
@@ -1217,6 +1386,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<List<RrhhArea>> listAreas() async {
+    if (!useBackend) return RrhhLocalStore.instance.listAreas();
     try {
       return await app.client.rrhhOrganization.listAreas(
         includeInactive: false,
@@ -1228,6 +1398,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhArea> createArea(RrhhArea area) async {
+    if (!useBackend) return RrhhLocalStore.instance.createArea(area);
     try {
       return await app.client.rrhhOrganization.createArea(area);
     } catch (_) {
@@ -1237,6 +1408,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhArea> updateArea(RrhhArea area) async {
+    if (!useBackend) return area;
     try {
       return await app.client.rrhhOrganization.updateArea(area);
     } catch (_) {
@@ -1246,6 +1418,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<List<RrhhPosition>> listPositions() async {
+    if (!useBackend) return RrhhLocalStore.instance.listPositions();
     try {
       return await app.client.rrhhOrganization.listPositions(
         includeInactive: false,
@@ -1257,6 +1430,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhPosition> createPosition(RrhhPosition position) async {
+    if (!useBackend) return RrhhLocalStore.instance.createPosition(position);
     try {
       return await app.client.rrhhOrganization.createPosition(position);
     } catch (_) {
@@ -1266,6 +1440,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhPosition> updatePosition(RrhhPosition position) async {
+    if (!useBackend) return position;
     try {
       return await app.client.rrhhOrganization.updatePosition(position);
     } catch (_) {
@@ -1275,6 +1450,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<List<RrhhSpecialty>> listSpecialties() async {
+    if (!useBackend) return RrhhLocalStore.instance.listSpecialties();
     try {
       return await app.client.rrhhOrganization.listSpecialties(
         includeInactive: false,
@@ -1286,6 +1462,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhSpecialty> createSpecialty(RrhhSpecialty specialty) async {
+    if (!useBackend) return specialty;
     try {
       return await app.client.rrhhOrganization.createSpecialty(specialty);
     } catch (e) {
@@ -1295,6 +1472,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhSpecialty> updateSpecialty(RrhhSpecialty specialty) async {
+    if (!useBackend) return specialty;
     try {
       return await app.client.rrhhOrganization.updateSpecialty(specialty);
     } catch (e) {
@@ -1734,6 +1912,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<List<RrhhSchedule>> listSchedules() async {
+    if (!useBackend) return List.unmodifiable(_inMemorySchedules);
     try {
       final serverSchedules = await app.client.rrhhAssignment.listSchedules(
         limit: 100,
@@ -1815,6 +1994,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     DateTime? fromDate,
     DateTime? toDate,
   }) async {
+    if (!useBackend) return _localLeaveRequests;
     try {
       final rawList = await app.client.rrhhLabor.listLeaveRequests(
         limit: 100,
@@ -1882,6 +2062,12 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhLeaveRequest?> getLeaveRequestById(int id) async {
+    if (!useBackend) {
+      return _localLeaveRequests.cast<RrhhLeaveRequest?>().firstWhere(
+        (x) => x?.id == id,
+        orElse: () => null,
+      );
+    }
     try {
       final e = await app.client.rrhhLabor.getLeaveRequestById(id);
       if (e != null) {
@@ -1916,6 +2102,15 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhLeaveRequest> createLeaveRequest(RrhhLeaveRequest request) async {
+    if (!useBackend) {
+      final dummy = request.copyWith(
+        id: DateTime.now().millisecondsSinceEpoch % 100000,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+      _localLeaveRequests.add(dummy);
+      return dummy;
+    }
     try {
       final created = await app.client.rrhhLabor.createLeaveRequest(
         employeeId: request.employeeId,
@@ -1963,6 +2158,23 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? reason,
     String? approvedBy,
   }) async {
+    if (!useBackend) {
+      final current = await getLeaveRequestById(id);
+      if (current != null) {
+        final updated = current.copyWith(
+          status: newStatus.toLowerCase(),
+          rejectionReason: newStatus.toLowerCase() == 'rechazado' ? reason : null,
+          approvedAt: DateTime.now(),
+          approvedBy: approvedBy ?? 'Administrador',
+        );
+        await updateLeaveRequest(updated);
+        return updated;
+      }
+      throw const RrhhRemoteException(
+        code: 'NOT_FOUND',
+        message: 'Solicitud no encontrada',
+      );
+    }
     try {
       await app.client.rrhhLabor.resolveLeaveRequest(
         id,
@@ -2021,6 +2233,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     DateTime? fromDate,
     DateTime? toDate,
   }) async {
+    if (!useBackend) return _localVacationRecords;
     try {
       final rawList = await app.client.rrhhLabor.listVacations(
         employeeId: employeeId,
@@ -2097,6 +2310,16 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhVacationRecord> createVacationRecord(RrhhVacationRecord record) async {
+    if (!useBackend) {
+      final full = record.copyWith(
+        id: DateTime.now().millisecondsSinceEpoch % 100000,
+        code: 'VAC-${DateTime.now().millisecondsSinceEpoch % 1000}',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+      _localVacationRecords.add(full);
+      return full;
+    }
     try {
       final v = await app.client.rrhhLabor.requestVacation(
         employeeId: record.employeeId,
@@ -2162,6 +2385,32 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? balanceStatus,
     int? areaId,
   }) async {
+    if (!useBackend) {
+      final employees = RrhhLocalStore.instance.listEmployees(
+        status: 'ACTIVO',
+        areaId: areaId,
+      );
+      final now = DateTime.now();
+      return employees.map((emp) {
+        final hireDate = emp.hireDate;
+        final assignedDays = RrhhVacationCalculator.getAssignedDays(hireDate, now);
+        return RrhhVacationBalance(
+          employeeId: emp.id,
+          employeeCode: emp.code,
+          employeeName: emp.fullName,
+          position: emp.position,
+          area: emp.area,
+          hireDate: hireDate,
+          antiquity: now.difference(hireDate),
+          assignedDays: assignedDays,
+          usedDays: 0,
+          pendingDays: assignedDays,
+          balanceStatus: RrhhVacationBalanceStatus.disponible,
+          nextAnniversary: RrhhVacationCalculator.getNextAnniversary(hireDate, now),
+          daysUntilAnniversary: RrhhVacationCalculator.getNextAnniversary(hireDate, now).difference(now).inDays,
+        );
+      }).toList();
+    }
     try {
       final employees = await app.client.rrhhPersonnel.listEmployees(
         status: 'ACTIVO',
@@ -2271,6 +2520,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<List<RrhhVacation>> listVacations() async {
+    if (!useBackend) return const [];
     try {
       return await app.client.rrhhLabor.listVacations(
         limit: 100,
@@ -2284,6 +2534,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhVacation> requestVacation(RrhhVacation vacation) async {
+    if (!useBackend) return vacation;
     try {
       return await app.client.rrhhLabor.requestVacation(
         employeeId: vacation.employeeId,
@@ -2303,6 +2554,25 @@ class RrhhRepositoryRemote implements RrhhRepository {
     int vacationId, {
     required String approvedBy,
   }) async {
+    if (!useBackend) {
+      final now = DateTime.now();
+      return RrhhVacation(
+        code: 'VAC-2026-001',
+        employeeId: 1,
+        employeeCode: 'EMP-001',
+        employeeName: 'Carlos Mendoza Cuéllar',
+        periodYear: 2026,
+        startDate: now,
+        endDate: now.add(const Duration(days: 5)),
+        daysRequested: 5,
+        totalAccruedDays: 15,
+        remainingBalanceDays: 10,
+        status: 'APROBADO',
+        notes: 'Aprobado por $approvedBy',
+        createdAt: now,
+        updatedAt: now,
+      );
+    }
     try {
       return await app.client.rrhhLabor.approveVacation(
         vacationId,
@@ -2328,6 +2598,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     DateTime? fromDate,
     DateTime? toDate,
   }) async {
+    if (!useBackend) return _localDisciplinaryRecords;
     try {
       final rawIncidents = await app.client.rrhhLabor.listIncidents(
         limit: 100,
@@ -2492,6 +2763,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     String? severity,
     String? search,
   }) async {
+    if (!useBackend) return const [];
     try {
       return await app.client.rrhhLabor.listIncidents(
         severity: severity,
@@ -2506,6 +2778,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
 
   @override
   Future<RrhhIncident> recordIncident(RrhhIncident incident) async {
+    if (!useBackend) return incident;
     try {
       return await app.client.rrhhLabor.recordIncident(
         employeeId: incident.employeeId,
@@ -2537,6 +2810,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     DateTime? fromDate,
     DateTime? toDate,
   }) async {
+    if (!useBackend) return _localTerminationRecords;
     try {
       final inactives = await app.client.rrhhPersonnel.listEmployees(
         status: 'INACTIVO',
@@ -2699,6 +2973,28 @@ class RrhhRepositoryRemote implements RrhhRepository {
     required String registeredBy,
     required double severancePay,
   }) async {
+    if (!useBackend) {
+      final emp = RrhhLocalStore.instance.getEmployeeById(employeeId);
+      final now = DateTime.now();
+      return RrhhTermination(
+        code: 'DESV-${exitDate.year}-${employeeId.toString().padLeft(3, '0')}',
+        employeeId: employeeId,
+        employeeCode: emp.code,
+        employeeName: emp.fullName,
+        employeeCi: emp.identityCard,
+        contractType: emp.contractType,
+        entryDate: emp.realStartDate,
+        terminationDate: exitDate,
+        lastWorkingDay: exitDate,
+        reason: reason,
+        detailedReason: exitObservations,
+        yearsOfService: (exitDate.difference(emp.realStartDate).inDays / 365),
+        severanceAmount: severancePay,
+        clearanceCompleted: true,
+        isEligibleForRehire: true,
+        createdAt: now,
+      );
+    }
     try {
       return await app.client.rrhhLabor.terminateEmployee(
         employeeId: employeeId,
@@ -3065,6 +3361,7 @@ class RrhhRepositoryRemote implements RrhhRepository {
     int? limit,
     int? offset,
   }) async {
+    if (!useBackend) return const [];
     try {
       return await app.client.rrhhLabor.listMovements(
         employeeId: employeeId,

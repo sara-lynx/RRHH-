@@ -80,7 +80,7 @@ class _RrhhDashboardKpiCardState extends State<RrhhDashboardKpiCard> {
             onTap: widget.onTap,
             borderRadius: BorderRadius.circular(12),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: widget.isLoading
                   ? _buildSkeleton()
                   : _buildContent(effectiveBadgeColor),
@@ -92,139 +92,153 @@ class _RrhhDashboardKpiCardState extends State<RrhhDashboardKpiCard> {
   }
 
   Widget _buildContent(Color effectiveBadgeColor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 240,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Text(
-                widget.label.toUpperCase(),
-                style: GoogleFonts.inter(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.08,
-                  color: const Color(0xFF94A3B8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.label.toUpperCase(),
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.08,
+                      color: const Color(0xFF94A3B8),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: widget.accentColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    widget.icon,
+                    size: 15,
+                    color: widget.accentColor,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              widget.value,
+              style: GoogleFonts.inter(
+                fontSize: 19,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.02,
+                color: const Color(0xFFF8FAFC),
               ),
             ),
-            const SizedBox(width: 8),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: widget.accentColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                widget.icon,
-                size: 18,
-                color: widget.accentColor,
-              ),
+            const SizedBox(height: 3),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.subtext,
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF94A3B8),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (widget.badgeText != null) ...[
+                  const SizedBox(width: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: effectiveBadgeColor.withValues(alpha: 0.14),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: effectiveBadgeColor.withValues(alpha: 0.35),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      widget.badgeText!,
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w700,
+                        color: effectiveBadgeColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        Text(
-          widget.value,
-          style: GoogleFonts.inter(
-            fontSize: 22,
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.02,
-            color: const Color(0xFFF8FAFC),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                widget.subtext,
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFF94A3B8),
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (widget.badgeText != null) ...[
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: effectiveBadgeColor.withValues(alpha: 0.14),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: effectiveBadgeColor.withValues(alpha: 0.35),
-                    width: 1,
-                  ),
-                ),
-                child: Text(
-                  widget.badgeText!,
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    color: effectiveBadgeColor,
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ],
+      ),
     );
   }
 
   Widget _buildSkeleton() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: SizedBox(
+        width: 240,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 100,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E293B),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E293B),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
             Container(
-              width: 100,
+              width: 140,
+              height: 22,
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E293B),
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Container(
+              width: 110,
               height: 12,
               decoration: BoxDecoration(
                 color: const Color(0xFF1E293B),
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E293B),
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
           ],
         ),
-        const SizedBox(height: 12),
-        Container(
-          width: 140,
-          height: 24,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E293B),
-            borderRadius: BorderRadius.circular(6),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: 110,
-          height: 12,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E293B),
-            borderRadius: BorderRadius.circular(4),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

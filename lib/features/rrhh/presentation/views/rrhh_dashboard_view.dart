@@ -175,7 +175,7 @@ class _RrhhDashboardViewState extends State<RrhhDashboardView> {
       crossAxisCount: crossAxisCount,
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
-      childAspectRatio: isMobile ? 2.4 : (isTablet ? 2.2 : 1.95),
+      childAspectRatio: isMobile ? 2.2 : (isTablet ? 2.0 : 1.6),
       children: cards,
     );
   }
