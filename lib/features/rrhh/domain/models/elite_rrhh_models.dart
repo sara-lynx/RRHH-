@@ -85,6 +85,13 @@ abstract class EliteCostCenter {
   static const String com = 'CC-COM';
   static const String rrhh = 'CC-RRHH';
 
+  static const String seguridad = seg;
+  static const String limpieza = lim;
+  static const String jardineria = jar;
+  static const String mantenimiento = man;
+  static const String administracion = adm;
+  static const String comercial = com;
+
   static const List<String> all = [
     seg,
     lim,
