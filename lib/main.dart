@@ -20,39 +20,16 @@ void main() async {
   runApp(const ProviderScope(child: EliteMultiserviciosApp()));
 }
 
-class EliteMultiserviciosApp extends StatefulWidget {
+class EliteMultiserviciosApp extends StatelessWidget {
   const EliteMultiserviciosApp({super.key});
 
   @override
-  State<EliteMultiserviciosApp> createState() => _EliteMultiserviciosAppState();
-}
-
-class _EliteMultiserviciosAppState extends State<EliteMultiserviciosApp> {
-  ThemeMode _themeMode = ThemeMode.system;
-
-  void _toggleTheme() {
-    setState(() {
-      if (_themeMode == ThemeMode.light) {
-        _themeMode = ThemeMode.dark;
-      } else {
-        _themeMode = ThemeMode.light;
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final isDark =
-        _themeMode == ThemeMode.dark ||
-        (_themeMode == ThemeMode.system &&
-            MediaQuery.platformBrightnessOf(context) == Brightness.dark);
-
     return MaterialApp(
       title: 'Elite Multiservicios — Recursos Humanos (RRHH)',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: _themeMode,
+      themeMode: ThemeMode.light,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {
           PointerDeviceKind.mouse,
@@ -72,9 +49,8 @@ class _EliteMultiserviciosAppState extends State<EliteMultiserviciosApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: RrhhShellScreen(
-        onToggleTheme: _toggleTheme,
-        isDarkMode: isDark,
+      home: const RrhhShellScreen(
+        isDarkMode: false,
       ),
     );
   }

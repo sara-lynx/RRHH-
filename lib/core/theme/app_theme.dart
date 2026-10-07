@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Sistema de diseño visual y temas para Elite Multiservicios.
-/// Diseñado con estándares de alta jerarquía visual, accesibilidad y tokens de Google Stitch.
+/// Configurado al 100% en MODO CLARO ESTRICTO corporativo (Esmeralda #0D9488 y Slate).
 abstract class AppTheme {
-  // Paleta de Colores Primaria y Acentos (Tokens Stitch)
-  static const Color primaryBlue = Color(0xFF1E3A8A); // Deep Royal Blue
-  static const Color primaryHover = Color(0xFF0F172A);
+  // Paleta de Colores Corporativa Elite (Esmeralda y Slate)
+  static const Color primaryEmerald = Color(0xFF0D9488);
+  static const Color primaryEmeraldDark = Color(0xFF0F766E);
+  static const Color primaryHover = Color(0xFF115E59);
   static const Color accentBlue = Color(0xFF2563EB);
-  static const Color accentIndigo = Color(0xFF4F46E5);
+  static const Color primaryBlue = Color(0xFF1E3A8A);
   static const Color emeraldSuccess = Color(0xFF059669);
-  static const Color amberWarning = Color(0xFFD97706);
-  static const Color roseDanger = Color(0xFFE11D48);
-  static const Color statusError = Color(0xFFEF4444);
+  static const Color statusSuccess = Color(0xFF047857);
+  static const Color statusWarning = Color(0xFFB45309);
+  static const Color statusError = Color(0xFFB91C1C);
   static const Color statusErrorBg = Color(0xFFFEF2F2);
 
   // Fondos y Superficies Modo Claro
@@ -22,35 +23,66 @@ abstract class AppTheme {
   static const Color lightTextPrimary = Color(0xFF0F172A);
   static const Color lightTextSecondary = Color(0xFF64748B);
 
-  // Fondos y Superficies Modo Oscuro
-  static const Color darkBg = Color(0xFF0B0F19);
-  static const Color darkSurface = Color(0xFF111827);
-  static const Color darkSurfaceElevated = Color(0xFF1E293B);
-  static const Color darkBorder = Color(0xFF334155);
-  static const Color darkTextPrimary = Color(0xFFF8FAFC);
-  static const Color darkTextSecondary = Color(0xFF94A3B8);
-
-  /// Tema Claro
+  /// Tema 100% Modo Claro Estricto Blindado contra Fondos Oscuros
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+      canvasColor: Colors.white, // OBLIGATORIO: Evita dropdowns negros nativos
+      cardColor: Colors.white,
       colorScheme: const ColorScheme.light(
-        primary: primaryBlue,
-        secondary: accentBlue,
-        surface: lightSurface,
-        error: statusError,
+        primary: Color(0xFF0D9488), // Verde esmeralda corporativo
+        surface: Colors.white,
+        onPrimary: Colors.white,
+        onSurface: Color(0xFF0F172A),
+        error: Color(0xFFB91C1C),
       ),
-      scaffoldBackgroundColor: lightBg,
       textTheme: GoogleFonts.interTextTheme(
         ThemeData.light().textTheme,
       ),
+      popupMenuTheme: const PopupMenuThemeData(
+        color: Colors.white,
+        surfaceTintColor: Colors.white,
+        textStyle: TextStyle(color: Color(0xFF0F172A), fontSize: 13),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+      ),
       cardTheme: CardThemeData(
-        color: lightSurface,
+        color: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: lightBorder),
+          side: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFFF8FAFC),
+        hintStyle: const TextStyle(color: Color(0xFF94A3B8), fontSize: 13),
+        labelStyle: const TextStyle(
+          color: Color(0xFF475569),
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: Color(0xFF0D9488), width: 1.5),
         ),
       ),
       scrollbarTheme: ScrollbarThemeData(
@@ -67,142 +99,30 @@ abstract class AppTheme {
           return const Color(0xFFCBD5E1);
         }),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: const Color(0xFFF8FAFC),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: lightBorder),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: lightBorder),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: primaryBlue, width: 2),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: statusError),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: statusError, width: 2),
-        ),
-      ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: primaryBlue,
+          backgroundColor: const Color(0xFF0D9488),
           foregroundColor: Colors.white,
-          minimumSize: const Size(64, 48),
+          minimumSize: const Size(64, 40),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
         ),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: lightSurface,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
-          color: lightTextPrimary,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
+          color: Color(0xFF0F172A),
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
         ),
-        iconTheme: IconThemeData(color: lightTextPrimary),
+        iconTheme: IconThemeData(color: Color(0xFF0F172A)),
       ),
     );
   }
 
-  /// Tema Oscuro
-  static ThemeData get darkTheme {
-    return ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
-        primary: accentBlue,
-        secondary: primaryBlue,
-        surface: darkSurface,
-        error: statusError,
-      ),
-      scaffoldBackgroundColor: darkBg,
-      textTheme: GoogleFonts.interTextTheme(
-        ThemeData.dark().textTheme,
-      ),
-      cardTheme: CardThemeData(
-        color: darkSurface,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: darkBorder),
-        ),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: const Color(0xFF0F172A),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: darkBorder),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: darkBorder),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: accentBlue, width: 2),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: statusError),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: statusError, width: 2),
-        ),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          backgroundColor: primaryBlue,
-          foregroundColor: Colors.white,
-          minimumSize: const Size(64, 48),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-      ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: darkSurface,
-        elevation: 0,
-        centerTitle: false,
-        titleTextStyle: TextStyle(
-          color: darkTextPrimary,
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-        ),
-        iconTheme: IconThemeData(color: darkTextPrimary),
-      ),
-      scrollbarTheme: ScrollbarThemeData(
-        interactive: true,
-        radius: const Radius.circular(8),
-        thickness: const WidgetStatePropertyAll(8),
-        thumbColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.dragged)) {
-            return const Color(0xFF94A3B8);
-          }
-          if (states.contains(WidgetState.hovered)) {
-            return const Color(0xFF64748B);
-          }
-          return const Color(0xFF475569);
-        }),
-      ),
-    );
-  }
+  /// Prohíbe cualquier fallback a modo oscuro devolviendo siempre el tema claro blindado
+  static ThemeData get darkTheme => lightTheme;
 }

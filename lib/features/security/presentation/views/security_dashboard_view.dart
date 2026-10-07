@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:elite_multiservicios_client/elite_multiservicios_client.dart';
 import '../../../../main.dart' as app;
-import '../../../rrhh/data/repositories/rrhh_repository.dart';
+import '../../../rrhh/data/elite_rrhh_local_store.dart';
+import '../../../rrhh/domain/models/elite_rrhh_models.dart';
 import '../../services/security_api_service.dart';
 import '../../models/dashboard_operational_metrics.dart';
 import '../widgets/charts/operational_pipeline_bar_chart.dart';
@@ -82,8 +83,13 @@ class _SecurityDashboardViewState extends State<SecurityDashboardView> {
       final pipelineRes = results[2] as CrmPipelineMetricsResponse?;
       final customerRes = results[3] as CrmCustomerMetricsResponse?;
       final agendaRes = results[4] as CrmAgendaMetricsResponse?;
-
-      final rrhhMetrics = await RrhhRepository.current.getDashboardMetrics();
+      final employees = EliteRrhhLocalStore.instance.getEmployees();
+      final activeEmployeesCount =
+          employees.where((e) => e.status == EmployeeStatus.activo).length;
+      final fieldEmployeesCount =
+          employees.where((e) => e.isField).length;
+      final officeEmployeesCount =
+          employees.where((e) => e.isOffice).length;
       const int latency = 14;
 
       if (mounted) {
@@ -94,9 +100,9 @@ class _SecurityDashboardViewState extends State<SecurityDashboardView> {
             pipeline: pipelineRes,
             customers: customerRes,
             agenda: agendaRes,
-            activeEmployees: rrhhMetrics.activeEmployeesCount,
-            fieldEmployees: rrhhMetrics.fieldEmployeesCount,
-            officeEmployees: rrhhMetrics.officeEmployeesCount,
+            activeEmployees: activeEmployeesCount,
+            fieldEmployees: fieldEmployeesCount,
+            officeEmployees: officeEmployeesCount,
             totalUsers: secMetrics.totalUsers,
             activeSessions: secMetrics.activeSessions,
             totalAuditLogs: secMetrics.totalAuditLogs,
