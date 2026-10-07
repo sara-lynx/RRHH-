@@ -800,99 +800,102 @@ class _ElitePayrollTableTabState extends ConsumerState<ElitePayrollTableTab> {
                 top: BorderSide(color: Color(0xFFE2E8F0)),
               ),
             ),
-            child: Row(
-              children: [
-                Text(
-                  'TOTALES (${filteredPayroll.length} reg):',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFF475569),
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Básico: Bs. ${totalBase.toStringAsFixed(2)}',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 11.5,
-                    color: const Color(0xFF334155),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Antigüedad: Bs. ${totalSeniority.toStringAsFixed(2)}',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 11.5,
-                    color: const Color(0xFF0D9488),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Ganado: Bs. ${totalGross.toStringAsFixed(2)}',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFF0F172A),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Multas: Bs. ${totalPenalties.toStringAsFixed(2)}',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFFDC2626),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Gestora: Bs. ${totalGestora.toStringAsFixed(2)}',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 11.5,
-                    color: const Color(0xFF64748B),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Total Desc.: Bs. ${totalDeductions.toStringAsFixed(2)}',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFFB91C1C),
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  'LÍQUIDO A PAGAR:',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: const Color(0xFF475569),
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF0FDFA),
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color(0xFF99F6E4)),
-                  ),
-                  child: Text(
-                    'Bs. ${totalNet.toStringAsFixed(2)}',
-                    style: GoogleFonts.jetBrainsMono(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
-                      color: const Color(0xFF0F766E),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Text(
+                    'TOTALES (${filteredPayroll.length} reg):',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF475569),
+                      letterSpacing: 0.3,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 12),
+                  Text(
+                    'Básico: Bs. ${totalBase.toStringAsFixed(2)}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 11.5,
+                      color: const Color(0xFF334155),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Antigüedad: Bs. ${totalSeniority.toStringAsFixed(2)}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 11.5,
+                      color: const Color(0xFF0D9488),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Ganado: Bs. ${totalGross.toStringAsFixed(2)}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF0F172A),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Multas: Bs. ${totalPenalties.toStringAsFixed(2)}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFFDC2626),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Gestora: Bs. ${totalGestora.toStringAsFixed(2)}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 11.5,
+                      color: const Color(0xFF64748B),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Total Desc.: Bs. ${totalDeductions.toStringAsFixed(2)}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFFB91C1C),
+                    ),
+                  ),
+                  const SizedBox(width: 24),
+                  Text(
+                    'LÍQUIDO A PAGAR:',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF475569),
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0FDFA),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: const Color(0xFF99F6E4)),
+                    ),
+                    child: Text(
+                      'Bs. ${totalNet.toStringAsFixed(2)}',
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFF0F766E),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

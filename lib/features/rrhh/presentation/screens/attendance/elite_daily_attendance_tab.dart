@@ -136,6 +136,7 @@ class _EliteDailyAttendanceTabState
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<EmployeeWorkplaceType?>(
                         value: workplaceFilter,
+                        isDense: true,
                         icon: const Icon(
                           Icons.filter_list,
                           size: 15,
@@ -195,6 +196,7 @@ class _EliteDailyAttendanceTabState
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String?>(
                         value: costCenterFilter,
+                        isDense: true,
                         icon: const Icon(
                           Icons.business_outlined,
                           size: 15,
@@ -241,6 +243,7 @@ class _EliteDailyAttendanceTabState
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<AttendanceEvaluation?>(
                         value: evalFilter,
+                        isDense: true,
                         icon: const Icon(
                           Icons.verified_outlined,
                           size: 15,
