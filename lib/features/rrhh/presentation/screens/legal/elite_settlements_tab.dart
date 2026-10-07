@@ -23,6 +23,13 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
     super.dispose();
   }
 
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     final settlements = ref.watch(rrhhFilteredSettlementsProvider);
@@ -197,17 +204,17 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
           // ===================================================================
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              padding: const EdgeInsets.all(16),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x040F172A),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                      offset: Offset(0, 1),
                     ),
                   ],
                 ),
@@ -236,22 +243,22 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                       )
                     : LayoutBuilder(
                         builder: (context, constraints) {
-                          final tableWidth = constraints.maxWidth < 1000
-                              ? 1000.0
+                          final tableWidth = constraints.maxWidth < 1180
+                              ? 1180.0
                               : constraints.maxWidth;
-                          const horizMargin = 12.0;
+                          const horizMargin = 16.0;
                           final netColumnsWidth = tableWidth - (horizMargin * 2);
 
                           // Reparto proporcional al 100%
-                          final colEmployee = netColumnsWidth * 0.17;
+                          final colEmployee = netColumnsWidth * 0.20;
                           final colReason = netColumnsWidth * 0.13;
                           final colSeniority = netColumnsWidth * 0.09;
                           final colIndemnity = netColumnsWidth * 0.10;
                           final colSeverance = netColumnsWidth * 0.09;
                           final colBonus = netColumnsWidth * 0.09;
                           final colVacations = netColumnsWidth * 0.09;
-                          final colTotal = netColumnsWidth * 0.13;
-                          final colActions = netColumnsWidth * 0.11;
+                          final colTotal = netColumnsWidth * 0.12;
+                          final colActions = netColumnsWidth * 0.09;
 
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -260,19 +267,19 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: DataTable(
-                                  headingRowHeight: 44.0,
-                                  dataRowMinHeight: 48.0,
-                                  dataRowMaxHeight: 52.0,
+                                  headingRowHeight: 46.0,
+                                  dataRowMinHeight: 52.0,
+                                  dataRowMaxHeight: 56.0,
                                   horizontalMargin: horizMargin,
                                   columnSpacing: 0,
                                   border: const TableBorder(
                                     horizontalInside: BorderSide(
                                       color: Color(0xFFF1F5F9),
-                                      width: 1,
+                                      width: 1.0,
                                     ),
                                   ),
-                                  headingRowColor: WidgetStateProperty.all(
-                                    const Color(0xFFF8FAFC),
+                                  headingRowColor: const WidgetStatePropertyAll(
+                                    Color(0xFFF8FAFC),
                                   ),
                                   columns: [
                                     DataColumn(
@@ -283,8 +290,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -297,8 +304,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -311,8 +318,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -325,8 +332,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -339,8 +346,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -353,8 +360,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -367,8 +374,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -381,8 +388,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -395,8 +402,8 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -405,45 +412,60 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                   rows: settlements.map((item) {
                                     return DataRow(
                                       cells: [
-                                        // Colaborador
+                                        // Colaborador con Avatar 30x30
                                         DataCell(
                                           SizedBox(
                                             width: colEmployee,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            child: Row(
                                               children: [
-                                                Text(
-                                                  item.employeeName,
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color:
-                                                        const Color(0xFF0F172A),
+                                                CircleAvatar(
+                                                  radius: 15,
+                                                  backgroundColor: const Color(0xFFE0F2FE),
+                                                  child: Text(
+                                                    _getInitials(item.employeeName),
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 11,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: const Color(0xFF0369A1),
+                                                    ),
                                                   ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                 ),
-                                                Text(
-                                                  '${item.ci} • ${item.position}',
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 10.5,
-                                                    color:
-                                                        const Color(0xFF64748B),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        item.employeeName,
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 12.5,
+                                                          fontWeight: FontWeight.w700,
+                                                          color: const Color(0xFF0F172A),
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      Text(
+                                                        '${item.ci} • ${item.position}',
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 10.5,
+                                                          color: const Color(0xFF64748B),
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ],
                                                   ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                 ),
                                               ],
                                             ),
                                           ),
                                         ),
 
-                                        // Motivo Retiro (Chip de color)
+                                        // Motivo Retiro (Cápsula redondeada 20)
                                         DataCell(
                                           SizedBox(
                                             width: colReason,
@@ -452,17 +474,13 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                               child: Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 7,
-                                                        vertical: 2.5),
+                                                        horizontal: 8,
+                                                        vertical: 3),
                                                 decoration: BoxDecoration(
                                                   color:
                                                       item.reason.badgeBgColor,
                                                   borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                    color: item
-                                                        .reason.badgeBorderColor,
-                                                  ),
+                                                      BorderRadius.circular(20),
                                                 ),
                                                 child: Text(
                                                   item.reason.label,
@@ -473,8 +491,7 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                                         item.reason.badgeColor,
                                                   ),
                                                   maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
                                             ),
@@ -561,7 +578,7 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           ),
                                         ),
 
-                                        // Total Finiquito en Bs (Negrita Esmeralda)
+                                        // Total Finiquito en Bs (Cápsula Suave Esmeralda)
                                         DataCell(
                                           SizedBox(
                                             width: colTotal,
@@ -570,26 +587,21 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                               child: Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                  horizontal: 7,
-                                                  vertical: 2.5,
+                                                  horizontal: 8,
+                                                  vertical: 3,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: const Color(0xFFF0FDFA),
+                                                  color: const Color(0xFFECFDF5),
                                                   borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                    color: const Color(
-                                                        0xFF99F6E4),
-                                                  ),
+                                                      BorderRadius.circular(20),
                                                 ),
                                                 child: Text(
                                                   'Bs. ${item.totalSettlement.toStringAsFixed(2)}',
                                                   style:
                                                       GoogleFonts.jetBrainsMono(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w800,
-                                                    color: const Color(
-                                                        0xFF0F766E),
+                                                    fontSize: 11.5,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFF047857),
                                                   ),
                                                 ),
                                               ),
@@ -597,7 +609,7 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                           ),
                                         ),
 
-                                        // Acción (Ver Finiquito)
+                                        // Acción (Ver Finiquito - Botón Cápsula)
                                         DataCell(
                                           SizedBox(
                                             width: colActions,
@@ -615,20 +627,20 @@ class _EliteSettlementsTabState extends ConsumerState<EliteSettlementsTab> {
                                                 },
                                                 style: OutlinedButton.styleFrom(
                                                   side: const BorderSide(
-                                                    color: Color(0xFFCBD5E1),
+                                                    color: Color(0xFFE2E8F0),
                                                   ),
                                                   backgroundColor: Colors.white,
                                                   elevation: 0,
                                                   padding:
                                                       const EdgeInsets.symmetric(
-                                                    horizontal: 8,
+                                                    horizontal: 10,
                                                     vertical: 0,
                                                   ),
                                                   minimumSize:
-                                                      const Size(0, 26),
+                                                      const Size(0, 28),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(4),
+                                                        BorderRadius.circular(8),
                                                   ),
                                                 ),
                                                 child: Text(

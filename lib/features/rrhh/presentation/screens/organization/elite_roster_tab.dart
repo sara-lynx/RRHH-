@@ -213,213 +213,276 @@ class EliteRosterTab extends ConsumerWidget {
         // TABLA EN EXPANDED (80% DEL ESPACIO VISUAL ÚTIL)
         // ---------------------------------------------------------------------
         Expanded(
-          child: Container(
-            color: Colors.white,
-            child: roster.isEmpty
-                ? Center(
-                    child: Text(
-                      'No se encontraron asignaciones para los filtros seleccionados.',
-                      style: GoogleFonts.inter(
-                        fontSize: 12.5,
-                        color: const Color(0xFF64748B),
-                      ),
+          child: roster.isEmpty
+              ? Center(
+                  child: Text(
+                    'No se encontraron asignaciones para los filtros seleccionados.',
+                    style: GoogleFonts.inter(
+                      fontSize: 12.5,
+                      color: const Color(0xFF64748B),
                     ),
-                  )
-                : SingleChildScrollView(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: DataTable(
-                        headingRowHeight: 36,
-                        dataRowMinHeight: 38,
-                        dataRowMaxHeight: 46,
-                        horizontalMargin: 16,
-                        columnSpacing: 16,
-                        headingRowColor: const WidgetStatePropertyAll(
-                          Color(0xFFF8FAFC),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: const Color(0xFFE2E8F0),
+                        width: 1,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x040F172A),
+                          blurRadius: 4,
+                          offset: Offset(0, 1),
                         ),
-                        dividerThickness: 1,
-                        border: const TableBorder(
-                          horizontalInside: BorderSide(
-                            color: Color(0xFFF1F5F9),
-                            width: 1,
+                      ],
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: DataTable(
+                          headingRowHeight: 46,
+                          dataRowMinHeight: 52,
+                          dataRowMaxHeight: 56,
+                          horizontalMargin: 16,
+                          columnSpacing: 16,
+                          headingRowColor: const WidgetStatePropertyAll(
+                            Color(0xFFF8FAFC),
                           ),
-                        ),
-                        columns: [
-                          _buildColumnHeader('COLABORADOR', 220),
-                          _buildColumnHeader('CENTRO COSTO', 130),
-                          _buildColumnHeader('SEDE ASIGNADA', 200),
-                          _buildColumnHeader('TURNO PROGRAMADO', 190),
-                          _buildColumnHeader('HORARIO DIARIO', 180),
-                          _buildColumnHeader('VIGENCIA', 130),
-                          _buildColumnHeader('ACCIONES', 100),
-                        ],
-                        rows: roster.map((item) {
-                          return DataRow(
-                            cells: [
-                              // Colaborador
-                              DataCell(
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.person_outline,
-                                      size: 15,
-                                      color: Color(0xFF64748B),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      item.employeeName,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 12.5,
-                                        fontWeight: FontWeight.w600,
-                                        color: const Color(0xFF0F172A),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              // Centro de Costo
-                              DataCell(
-                                Text(
-                                  item.serviceLineCode,
-                                  style: GoogleFonts.jetBrainsMono(
-                                    fontSize: 11.5,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF334155),
-                                  ),
-                                ),
-                              ),
-
-                              // Sede Asignada
-                              DataCell(
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.place_outlined,
-                                      size: 13,
-                                      color: Color(0xFF0D9488),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      item.siteName,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 12,
-                                        color: const Color(0xFF0F172A),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                              // Turno Programado
-                              DataCell(
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFF0FDFA),
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                      color: const Color(0xFFCCFBF1),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    item.shiftName,
-                                    style: GoogleFonts.inter(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xFF0F766E),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              // Horario Diario
-                              DataCell(
-                                Text(
-                                  item.scheduleSummary,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 11.5,
-                                    color: const Color(0xFF475569),
-                                  ),
-                                ),
-                              ),
-
-                              // Vigencia
-                              DataCell(
-                                Text(
-                                  'Desde ${dateFormat.format(item.startDate)}',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 11,
-                                    color: const Color(0xFF64748B),
-                                  ),
-                                ),
-                              ),
-
-                              // Acciones
-                              DataCell(
-                                PopupMenuButton<String>(
-                                  icon: const Icon(
-                                    Icons.more_horiz,
-                                    size: 18,
-                                    color: Color(0xFF64748B),
-                                  ),
-                                  tooltip: 'Opciones de Cuadrante',
-                                  padding: EdgeInsets.zero,
-                                  color: Colors.white,
-                                  elevation: 2,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                    side: const BorderSide(
-                                      color: Color(0xFFE2E8F0),
-                                    ),
-                                  ),
-                                  onSelected: (action) {
-                                    if (action == 'rotar') {
-                                      EliteRosterAssignmentDialog.show(
-                                        context,
-                                        existingAssignment: item,
-                                      );
-                                    }
-                                  },
-                                  itemBuilder: (ctx) => [
-                                    PopupMenuItem(
-                                      value: 'rotar',
-                                      child: Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.sync_alt_outlined,
-                                            size: 16,
-                                            color: Color(0xFF0D9488),
+                          border: const TableBorder(
+                            horizontalInside: BorderSide(
+                              color: Color(0xFFF1F5F9),
+                              width: 1.0,
+                            ),
+                          ),
+                          columns: [
+                            _buildColumnHeader('COLABORADOR', 240),
+                            _buildColumnHeader('CENTRO COSTO', 130),
+                            _buildColumnHeader('SEDE ASIGNADA', 200),
+                            _buildColumnHeader('TURNO PROGRAMADO', 190),
+                            _buildColumnHeader('HORARIO DIARIO', 180),
+                            _buildColumnHeader('VIGENCIA', 130),
+                            _buildColumnHeader('ACCIONES', 100),
+                          ],
+                          rows: roster.map((item) {
+                            return DataRow(
+                              cells: [
+                                // Colaborador
+                                DataCell(
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: const Color(0xFFCCFBF1),
+                                        child: Text(
+                                          _getInitials(item.employeeName),
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF0F766E),
                                           ),
-                                          const SizedBox(width: 8),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
                                           Text(
-                                            'Rotar Personal / Sede',
+                                            item.employeeName,
                                             style: GoogleFonts.inter(
-                                              fontSize: 12,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w700,
                                               color: const Color(0xFF0F172A),
+                                            ),
+                                          ),
+                                          Text(
+                                            item.serviceLineCode,
+                                            style: GoogleFonts.inter(
+                                              fontSize: 10.5,
+                                              color: const Color(0xFF64748B),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        }).toList(),
+
+                                // Centro de Costo
+                                DataCell(
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 9,
+                                      vertical: 3.5,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF1F5F9),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      item.serviceLineCode,
+                                      style: GoogleFonts.jetBrainsMono(
+                                        fontSize: 10.5,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xFF334155),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                // Sede Asignada
+                                DataCell(
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.place_outlined,
+                                        size: 14,
+                                        color: Color(0xFF0D9488),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        item.siteName,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 12.5,
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF0F172A),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // Turno Programado
+                                DataCell(
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFECFDF5),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      item.shiftName,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xFF047857),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                // Horario Diario
+                                DataCell(
+                                  Text(
+                                    item.scheduleSummary,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      color: const Color(0xFF475569),
+                                    ),
+                                  ),
+                                ),
+
+                                // Vigencia
+                                DataCell(
+                                  Text(
+                                    'Desde ${dateFormat.format(item.startDate)}',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 11.5,
+                                      color: const Color(0xFF64748B),
+                                    ),
+                                  ),
+                                ),
+
+                                // Acciones
+                                DataCell(
+                                  PopupMenuButton<String>(
+                                    icon: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: const Color(0xFFE2E8F0),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: const Icon(
+                                        Icons.more_horiz,
+                                        size: 16,
+                                        color: Color(0xFF64748B),
+                                      ),
+                                    ),
+                                    tooltip: 'Opciones de Cuadrante',
+                                    padding: EdgeInsets.zero,
+                                    color: Colors.white,
+                                    elevation: 2,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                      side: const BorderSide(
+                                        color: Color(0xFFE2E8F0),
+                                      ),
+                                    ),
+                                    onSelected: (action) {
+                                      if (action == 'rotar') {
+                                        EliteRosterAssignmentDialog.show(
+                                          context,
+                                          existingAssignment: item,
+                                        );
+                                      }
+                                    },
+                                    itemBuilder: (ctx) => [
+                                      PopupMenuItem(
+                                        value: 'rotar',
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.sync_alt_outlined,
+                                              size: 16,
+                                              color: Color(0xFF0D9488),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'Rotar Personal / Sede',
+                                              style: GoogleFonts.inter(
+                                                fontSize: 12,
+                                                color: const Color(0xFF0F172A),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),
-          ),
+                ),
         ),
       ],
     );
+  }
+
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
   }
 
   DataColumn _buildColumnHeader(String label, double width) {
@@ -427,10 +490,10 @@ class EliteRosterTab extends ConsumerWidget {
       label: Text(
         label,
         style: GoogleFonts.inter(
-          fontSize: 10.5,
+          fontSize: 11.5,
           fontWeight: FontWeight.w700,
-          color: const Color(0xFF475569),
-          letterSpacing: 0.3,
+          color: const Color(0xFF64748B),
+          letterSpacing: 0.6,
         ),
       ),
     );

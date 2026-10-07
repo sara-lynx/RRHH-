@@ -159,17 +159,17 @@ class ElitePayrollAccountingTab extends ConsumerWidget {
           // =====================================================================
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              padding: const EdgeInsets.all(16),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x040F172A),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                      offset: Offset(0, 1),
                     ),
                   ],
                 ),
@@ -179,13 +179,14 @@ class ElitePayrollAccountingTab extends ConsumerWidget {
                     final tableWidth = constraints.maxWidth < 950
                         ? 950.0
                         : constraints.maxWidth;
-                    const horizMargin = 12.0;
-                    final netColumnsWidth = tableWidth - (horizMargin * 2);
+                    const horizMargin = 16.0;
+                    const colSpacing = 12.0;
+                    final netColumnsWidth = tableWidth - (horizMargin * 2) - (colSpacing * 4);
 
                     // Reparto proporcional 100% exacto
-                    final colAccountCode = netColumnsWidth * 0.14;
+                    final colAccountCode = netColumnsWidth * 0.16;
                     final colAccountName = netColumnsWidth * 0.36;
-                    final colCostCenter = netColumnsWidth * 0.18;
+                    final colCostCenter = netColumnsWidth * 0.16;
                     final colDebit = netColumnsWidth * 0.16;
                     final colCredit = netColumnsWidth * 0.16;
 
@@ -195,209 +196,205 @@ class ElitePayrollAccountingTab extends ConsumerWidget {
                         width: tableWidth,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
-                            child: DataTable(
-                              headingRowHeight: 44.0,
-                              dataRowMinHeight: 48.0,
-                              dataRowMaxHeight: 52.0,
-                              horizontalMargin: horizMargin,
-                              columnSpacing: 0,
-                              border: const TableBorder(
-                                horizontalInside: BorderSide(
-                                  color: Color(0xFFF1F5F9),
-                                  width: 1,
-                                ),
+                          child: DataTable(
+                            headingRowHeight: 46.0,
+                            dataRowMinHeight: 52.0,
+                            dataRowMaxHeight: 56.0,
+                            horizontalMargin: horizMargin,
+                            columnSpacing: colSpacing,
+                            border: const TableBorder(
+                              horizontalInside: BorderSide(
+                                color: Color(0xFFF1F5F9),
+                                width: 1.0,
                               ),
-                              headingRowColor: WidgetStateProperty.all(
-                                const Color(0xFFF8FAFC),
-                              ),
-                              columns: [
-                                DataColumn(
-                                  label: SizedBox(
-                                    width: colAccountCode,
-                                    child: Text(
-                                      'CÓDIGO DE CUENTA',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: SizedBox(
-                                    width: colAccountName,
-                                    child: Text(
-                                      'NOMBRE DE CUENTA CONTABLE',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: SizedBox(
-                                    width: colCostCenter,
-                                    child: Text(
-                                      'CENTRO DE COSTO',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: SizedBox(
-                                    width: colDebit,
-                                    child: Text(
-                                      'DEBE (BS)',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                DataColumn(
-                                  label: SizedBox(
-                                    width: colCredit,
-                                    child: Text(
-                                      'HABER (BS)',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              rows: entries.map((e) {
-                                return DataRow(
-                                  cells: [
-                                    // Código de Cuenta
-                                    DataCell(
-                                      SizedBox(
-                                        width: colAccountCode,
-                                        child: Text(
-                                          e.accountCode,
-                                          style: GoogleFonts.jetBrainsMono(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF0F172A),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Nombre de Cuenta
-                                    DataCell(
-                                      SizedBox(
-                                        width: colAccountName,
-                                        child: Text(
-                                          e.accountName,
-                                          style: GoogleFonts.inter(
-                                            fontSize: 12,
-                                            color: const Color(0xFF334155),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Centro de Costo
-                                    DataCell(
-                                      SizedBox(
-                                        width: colCostCenter,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 7,
-                                              vertical: 2.5,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFF1F5F9),
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: const Color(0xFFE2E8F0),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              e.costCenter,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 10.5,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xFF334155),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Debe (Bs)
-                                    DataCell(
-                                      SizedBox(
-                                        width: colDebit,
-                                        child: Text(
-                                          e.debit > 0
-                                              ? e.debit.toStringAsFixed(2)
-                                              : '--',
-                                          style: GoogleFonts.jetBrainsMono(
-                                            fontSize: 12,
-                                            fontWeight: e.debit > 0
-                                                ? FontWeight.w700
-                                                : FontWeight.normal,
-                                            color: e.debit > 0
-                                                ? const Color(0xFF0F172A)
-                                                : const Color(0xFF94A3B8),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Haber (Bs)
-                                    DataCell(
-                                      SizedBox(
-                                        width: colCredit,
-                                        child: Text(
-                                          e.credit > 0
-                                              ? e.credit.toStringAsFixed(2)
-                                              : '--',
-                                          style: GoogleFonts.jetBrainsMono(
-                                            fontSize: 12,
-                                            fontWeight: e.credit > 0
-                                                ? FontWeight.w700
-                                                : FontWeight.normal,
-                                            color: e.credit > 0
-                                                ? const Color(0xFF0F172A)
-                                                : const Color(0xFF94A3B8),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
                             ),
+                            headingRowColor: const WidgetStatePropertyAll(
+                              Color(0xFFF8FAFC),
+                            ),
+                            columns: [
+                              DataColumn(
+                                label: SizedBox(
+                                  width: colAccountCode,
+                                  child: Text(
+                                    'CÓDIGO DE CUENTA',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: SizedBox(
+                                  width: colAccountName,
+                                  child: Text(
+                                    'NOMBRE DE CUENTA CONTABLE',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: SizedBox(
+                                  width: colCostCenter,
+                                  child: Text(
+                                    'CENTRO DE COSTO',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: SizedBox(
+                                  width: colDebit,
+                                  child: Text(
+                                    'DEBE (BS)',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: SizedBox(
+                                  width: colCredit,
+                                  child: Text(
+                                    'HABER (BS)',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                            rows: entries.map((e) {
+                              return DataRow(
+                                cells: [
+                                  // Código de Cuenta
+                                  DataCell(
+                                    SizedBox(
+                                      width: colAccountCode,
+                                      child: Text(
+                                        e.accountCode,
+                                        style: GoogleFonts.jetBrainsMono(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFF0F172A),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Nombre de Cuenta
+                                  DataCell(
+                                    SizedBox(
+                                      width: colAccountName,
+                                      child: Text(
+                                        e.accountName,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 12.5,
+                                          color: const Color(0xFF334155),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Centro de Costo
+                                  DataCell(
+                                    SizedBox(
+                                      width: colCostCenter,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 9,
+                                            vertical: 3.5,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFF1F5F9),
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            e.costCenter,
+                                            style: GoogleFonts.inter(
+                                              fontSize: 10.5,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xFF334155),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Debe (Bs)
+                                  DataCell(
+                                    SizedBox(
+                                      width: colDebit,
+                                      child: Text(
+                                        e.debit > 0
+                                            ? e.debit.toStringAsFixed(2)
+                                            : '--',
+                                        style: GoogleFonts.jetBrainsMono(
+                                          fontSize: 12,
+                                          fontWeight: e.debit > 0
+                                              ? FontWeight.w700
+                                              : FontWeight.normal,
+                                          color: e.debit > 0
+                                              ? const Color(0xFF0F172A)
+                                              : const Color(0xFF94A3B8),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Haber (Bs)
+                                  DataCell(
+                                    SizedBox(
+                                      width: colCredit,
+                                      child: Text(
+                                        e.credit > 0
+                                            ? e.credit.toStringAsFixed(2)
+                                            : '--',
+                                        style: GoogleFonts.jetBrainsMono(
+                                          fontSize: 12,
+                                          fontWeight: e.credit > 0
+                                              ? FontWeight.w700
+                                              : FontWeight.normal,
+                                          color: e.credit > 0
+                                              ? const Color(0xFF0F172A)
+                                              : const Color(0xFF94A3B8),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
                           ),
                         ),
-                      );
-                    },
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

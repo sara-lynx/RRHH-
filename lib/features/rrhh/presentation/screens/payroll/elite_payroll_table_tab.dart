@@ -320,17 +320,17 @@ class _ElitePayrollTableTabState extends ConsumerState<ElitePayrollTableTab> {
           // =====================================================================
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              padding: const EdgeInsets.all(16),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x040F172A),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                      offset: Offset(0, 1),
                     ),
                   ],
                 ),
@@ -359,15 +359,16 @@ class _ElitePayrollTableTabState extends ConsumerState<ElitePayrollTableTab> {
                       )
                     : LayoutBuilder(
                         builder: (context, constraints) {
-                          final tableWidth = constraints.maxWidth < 1000
-                              ? 1000.0
+                          final tableWidth = constraints.maxWidth < 1280
+                              ? 1280.0
                               : constraints.maxWidth;
-                          const horizMargin = 12.0;
-                          final netColumnsWidth = tableWidth - (horizMargin * 2);
+                          const horizMargin = 16.0;
+                          const colSpacing = 12.0;
+                          final netColumnsWidth = tableWidth - (horizMargin * 2) - (colSpacing * 9);
 
                           // Reparto proporcional al 100% exacto
-                          final colWorker = netColumnsWidth * 0.17;
-                          final colPosition = netColumnsWidth * 0.14;
+                          final colWorker = netColumnsWidth * 0.18;
+                          final colPosition = netColumnsWidth * 0.13;
                           final colBase = netColumnsWidth * 0.08;
                           final colSeniority = netColumnsWidth * 0.08;
                           final colGross = netColumnsWidth * 0.09;
@@ -383,435 +384,404 @@ class _ElitePayrollTableTabState extends ConsumerState<ElitePayrollTableTab> {
                               width: tableWidth,
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
-                                  child: DataTable(
-                                    headingRowHeight: 44.0,
-                                    dataRowMinHeight: 48.0,
-                                    dataRowMaxHeight: 52.0,
-                                    horizontalMargin: horizMargin,
-                                    columnSpacing: 0,
-                                    border: const TableBorder(
-                                      horizontalInside: BorderSide(
-                                        color: Color(0xFFF1F5F9),
-                                        width: 1,
+                                child: DataTable(
+                                  headingRowHeight: 46.0,
+                                  dataRowMinHeight: 52.0,
+                                  dataRowMaxHeight: 56.0,
+                                  horizontalMargin: horizMargin,
+                                  columnSpacing: colSpacing,
+                                  border: const TableBorder(
+                                    horizontalInside: BorderSide(
+                                      color: Color(0xFFF1F5F9),
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  headingRowColor: const WidgetStatePropertyAll(
+                                    Color(0xFFF8FAFC),
+                                  ),
+                                  columns: [
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colWorker,
+                                        child: Text(
+                                          'COLABORADOR',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    headingRowColor: WidgetStateProperty.all(
-                                      const Color(0xFFF8FAFC),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colPosition,
+                                        child: Text(
+                                          'CARGO / LÍNEA',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    columns: [
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colWorker,
-                                          child: Text(
-                                            'COLABORADOR',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colBase,
+                                        child: Text(
+                                          'BÁSICO (BS)',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colPosition,
-                                          child: Text(
-                                            'CARGO / LÍNEA',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colSeniority,
+                                        child: Text(
+                                          'BONO ANTIG. (BS)',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colBase,
-                                          child: Text(
-                                            'BÁSICO (BS)',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colGross,
+                                        child: Text(
+                                          'TOTAL GANADO (BS)',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colSeniority,
-                                          child: Text(
-                                            'BONO ANTIG. (BS)',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colPenalties,
+                                        child: Text(
+                                          'MULTAS / ASIST. (BS)',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colGross,
-                                          child: Text(
-                                            'TOTAL GANADO (BS)',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colGestora,
+                                        child: Text(
+                                          'GESTORA 12.71% (BS)',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colPenalties,
-                                          child: Text(
-                                            'MULTAS / ASIST. (BS)',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colTotalDesc,
+                                        child: Text(
+                                          'TOTAL DESC. (BS)',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colGestora,
-                                          child: Text(
-                                            'GESTORA 12.71% (BS)',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colNet,
+                                        child: Text(
+                                          'LÍQUIDO PAGABLE (BS)',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colTotalDesc,
-                                          child: Text(
-                                            'TOTAL DESC. (BS)',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colActions,
+                                        child: Text(
+                                          'ACCIÓN',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colNet,
-                                          child: Text(
-                                            'LÍQUIDO PAGABLE (BS)',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colActions,
-                                          child: Text(
-                                            'ACCIÓN',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                    rows: filteredPayroll.map((item) {
-                                      return DataRow(
-                                        cells: [
-                                          // Colaborador
-                                          DataCell(
-                                            SizedBox(
-                                              width: colWorker,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    item.employeeName,
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: const Color(
-                                                          0xFF0F172A),
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  const SizedBox(height: 2),
-                                                  Text(
-                                                    '${item.ci} • ${item.serviceLineCode}',
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10.5,
-                                                      color: const Color(
-                                                          0xFF64748B),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Cargo / Línea
-                                          DataCell(
-                                            SizedBox(
-                                              width: colPosition,
-                                              child: Text(
-                                                item.position,
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 11.5,
-                                                  color:
-                                                      const Color(0xFF334155),
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                                maxLines: 1,
-                                                overflow:
-                                                    TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Básico (Bs)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colBase,
-                                              child: Text(
-                                                item.baseSalary
-                                                    .toStringAsFixed(2),
-                                                style:
-                                                    GoogleFonts.jetBrainsMono(
-                                                  fontSize: 12,
-                                                  color:
-                                                      const Color(0xFF334155),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Bono Antigüedad (Bs)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colSeniority,
-                                              child: Text(
-                                                item.seniorityBonus
-                                                    .toStringAsFixed(2),
-                                                style:
-                                                    GoogleFonts.jetBrainsMono(
-                                                  fontSize: 12,
-                                                  color:
-                                                      const Color(0xFF0D9488),
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Total Ganado (Bs)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colGross,
-                                              child: Text(
-                                                item.totalEarned
-                                                    .toStringAsFixed(2),
-                                                style:
-                                                    GoogleFonts.jetBrainsMono(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color:
-                                                      const Color(0xFF0F172A),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Multas / Asistencia (Rojo tenue si > 0)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colPenalties,
-                                              child: Text(
-                                                item.penaltyDeductions
-                                                    .toStringAsFixed(2),
-                                                style:
-                                                    GoogleFonts.jetBrainsMono(
-                                                  fontSize: 12,
-                                                  fontWeight: item
-                                                              .penaltyDeductions >
-                                                          0
-                                                      ? FontWeight.w700
-                                                      : FontWeight.normal,
-                                                  color: item
-                                                              .penaltyDeductions >
-                                                          0
-                                                      ? const Color(0xFFDC2626)
-                                                      : const Color(0xFF94A3B8),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Gestora 12.71%
-                                          DataCell(
-                                            SizedBox(
-                                              width: colGestora,
-                                              child: Text(
-                                                item.gestoraDeduction
-                                                    .toStringAsFixed(2),
-                                                style:
-                                                    GoogleFonts.jetBrainsMono(
-                                                  fontSize: 12,
-                                                  color:
-                                                      const Color(0xFF64748B),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Total Descuentos
-                                          DataCell(
-                                            SizedBox(
-                                              width: colTotalDesc,
-                                              child: Text(
-                                                item.totalDeductions
-                                                    .toStringAsFixed(2),
-                                                style:
-                                                    GoogleFonts.jetBrainsMono(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color:
-                                                      const Color(0xFFB91C1C),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Líquido Pagable (Esmeralda en negrita)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colNet,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                    horizontal: 7,
-                                                    vertical: 2.5,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(0xFFF0FDFA),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    border: Border.all(
-                                                      color: const Color(
-                                                          0xFF99F6E4),
-                                                    ),
-                                                  ),
+                                    ),
+                                  ],
+                                  rows: filteredPayroll.map((item) {
+                                    return DataRow(
+                                      cells: [
+                                        // Colaborador
+                                        DataCell(
+                                          SizedBox(
+                                            width: colWorker,
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 15,
+                                                  backgroundColor: const Color(0xFFCCFBF1),
                                                   child: Text(
-                                                    'Bs. ${item.netPayable.toStringAsFixed(2)}',
-                                                    style: GoogleFonts
-                                                        .jetBrainsMono(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      color: const Color(
-                                                          0xFF0F766E),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // Acción (Ver Boleta)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colActions,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: OutlinedButton(
-                                                  onPressed: () {
-                                                    ref
-                                                        .read(
-                                                            selectedPaySlipEmployeeIdProvider
-                                                                .notifier)
-                                                        .selectEmployee(
-                                                            item.employeeId);
-                                                    widget
-                                                        .onNavigateToPaySlip();
-                                                  },
-                                                  style:
-                                                      OutlinedButton.styleFrom(
-                                                    side: const BorderSide(
-                                                      color: Color(0xFFCBD5E1),
-                                                    ),
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    elevation: 0,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 0,
-                                                    ),
-                                                    minimumSize:
-                                                        const Size(0, 26),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    'Boleta',
+                                                    _getInitials(item.employeeName),
                                                     style: GoogleFonts.inter(
                                                       fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: const Color(
-                                                          0xFF334155),
+                                                      fontWeight: FontWeight.w700,
+                                                      color: const Color(0xFF0F766E),
                                                     ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        item.employeeName,
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 12.5,
+                                                          fontWeight: FontWeight.w700,
+                                                          color: const Color(0xFF0F172A),
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      Text(
+                                                        '${item.ci} • ${item.serviceLineCode}',
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 10.5,
+                                                          color: const Color(0xFF64748B),
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Cargo / Línea
+                                        DataCell(
+                                          SizedBox(
+                                            width: colPosition,
+                                            child: Text(
+                                              item.position,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 12,
+                                                color: const Color(0xFF334155),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Básico (Bs)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colBase,
+                                            child: Text(
+                                              item.baseSalary.toStringAsFixed(2),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                fontSize: 11.5,
+                                                color: const Color(0xFF334155),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Bono Antigüedad (Bs)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colSeniority,
+                                            child: Text(
+                                              item.seniorityBonus.toStringAsFixed(2),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                fontSize: 11.5,
+                                                color: const Color(0xFF0D9488),
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Total Ganado (Bs)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colGross,
+                                            child: Text(
+                                              item.totalEarned.toStringAsFixed(2),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xFF0F172A),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Multas / Asistencia
+                                        DataCell(
+                                          SizedBox(
+                                            width: colPenalties,
+                                            child: Text(
+                                              item.penaltyDeductions.toStringAsFixed(2),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                fontSize: 11.5,
+                                                fontWeight: item.penaltyDeductions > 0
+                                                    ? FontWeight.w700
+                                                    : FontWeight.normal,
+                                                color: item.penaltyDeductions > 0
+                                                    ? const Color(0xFFDC2626)
+                                                    : const Color(0xFF94A3B8),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Gestora 12.71%
+                                        DataCell(
+                                          SizedBox(
+                                            width: colGestora,
+                                            child: Text(
+                                              item.gestoraDeduction.toStringAsFixed(2),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                fontSize: 11.5,
+                                                color: const Color(0xFF64748B),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Total Descuentos
+                                        DataCell(
+                                          SizedBox(
+                                            width: colTotalDesc,
+                                            child: Text(
+                                              item.totalDeductions.toStringAsFixed(2),
+                                              style: GoogleFonts.jetBrainsMono(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xFFB91C1C),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Líquido Pagable (Cápsula esmeralda)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colNet,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 3.5,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xFFECFDF5),
+                                                  borderRadius: BorderRadius.circular(20),
+                                                ),
+                                                child: Text(
+                                                  'Bs. ${item.netPayable.toStringAsFixed(2)}',
+                                                  style: GoogleFonts.jetBrainsMono(
+                                                    fontSize: 11.5,
+                                                    fontWeight: FontWeight.w800,
+                                                    color: const Color(0xFF047857),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
+                                        ),
+
+                                        // Acción (Ver Boleta en Cápsula)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colActions,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: OutlinedButton(
+                                                onPressed: () {
+                                                  ref
+                                                      .read(
+                                                          selectedPaySlipEmployeeIdProvider
+                                                              .notifier)
+                                                      .selectEmployee(
+                                                          item.employeeId);
+                                                  widget.onNavigateToPaySlip();
+                                                },
+                                                style: OutlinedButton.styleFrom(
+                                                  side: const BorderSide(
+                                                    color: Color(0xFFE2E8F0),
+                                                  ),
+                                                  backgroundColor: Colors.white,
+                                                  elevation: 0,
+                                                  padding: const EdgeInsets.symmetric(
+                                                    horizontal: 10,
+                                                    vertical: 0,
+                                                  ),
+                                                  minimumSize: const Size(0, 28),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  'Boleta',
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: const Color(0xFF64748B),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }).toList(),
                                 ),
                               ),
-                            );
+                            ),
+                          );
                         },
                       ),
               ),
@@ -928,5 +898,12 @@ class _ElitePayrollTableTabState extends ConsumerState<ElitePayrollTableTab> {
         ],
       ),
     );
+  }
+
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
   }
 }

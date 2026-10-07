@@ -9,6 +9,13 @@ import '../../providers/elite_rrhh_providers.dart';
 class EliteOfficePunchesTab extends ConsumerWidget {
   const EliteOfficePunchesTab({super.key});
 
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allRecords = ref.watch(rrhhAttendanceProvider);
@@ -24,13 +31,13 @@ class EliteOfficePunchesTab extends ConsumerWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
           boxShadow: const [
             BoxShadow(
               color: Color(0x040F172A),
-              blurRadius: 6,
-              offset: Offset(0, 2),
+              blurRadius: 4,
+              offset: Offset(0, 1),
             ),
           ],
         ),
@@ -59,20 +66,20 @@ class EliteOfficePunchesTab extends ConsumerWidget {
               )
             : LayoutBuilder(
                 builder: (context, constraints) {
-                  final tableWidth = constraints.maxWidth < 1000
-                      ? 1000.0
+                  final tableWidth = constraints.maxWidth < 1100
+                      ? 1100.0
                       : constraints.maxWidth;
 
-                  const horizMargin = 12.0;
+                  const horizMargin = 16.0;
                   final netColumnsWidth = tableWidth - (horizMargin * 2);
 
                   // Distribuir el 100% exacto de las columnas útiles
                   final colWorker = netColumnsWidth * 0.22;
-                  final colPosition = netColumnsWidth * 0.18;
-                  final colEntry = netColumnsWidth * 0.08;
-                  final colExit = netColumnsWidth * 0.08;
+                  final colPosition = netColumnsWidth * 0.17;
+                  final colEntry = netColumnsWidth * 0.09;
+                  final colExit = netColumnsWidth * 0.09;
                   final colIp = netColumnsWidth * 0.12;
-                  final colBrowser = netColumnsWidth * 0.14;
+                  final colBrowser = netColumnsWidth * 0.13;
                   final colTolerance = netColumnsWidth * 0.08;
                   final colEvaluation = netColumnsWidth * 0.10;
 
@@ -83,15 +90,15 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                           child: DataTable(
-                            headingRowHeight: 44.0,
-                            dataRowMinHeight: 48.0,
-                            dataRowMaxHeight: 52.0,
-                            horizontalMargin: 12,
+                            headingRowHeight: 46.0,
+                            dataRowMinHeight: 52.0,
+                            dataRowMaxHeight: 56.0,
+                            horizontalMargin: horizMargin,
                             columnSpacing: 0,
                             border: const TableBorder(
                               horizontalInside: BorderSide(
                                 color: Color(0xFFF1F5F9),
-                                width: 1,
+                                width: 1.0,
                               ),
                             ),
                             headingRowColor: WidgetStateProperty.all(
@@ -106,8 +113,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -120,8 +127,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -134,8 +141,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -148,8 +155,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -162,8 +169,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -176,8 +183,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -191,8 +198,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -205,8 +212,8 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     style: GoogleFonts.inter(
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF475569),
-                                      letterSpacing: 0.5,
+                                      color: const Color(0xFF64748B),
+                                      letterSpacing: 0.6,
                                     ),
                                   ),
                                 ),
@@ -225,37 +232,60 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                       : '--:--');
 
                               final cleanIp = rec.ipAddress?.split(' ').first ?? '192.168.1.45';
-                              final workstation = rec.deviceBrowser?.contains('Estación') == true
-                                  ? 'Estación Central RRHH'
-                                  : 'Oficina Central';
 
                               return DataRow(
                                 cells: [
-                                  // Colaborador
+                                  // Colaborador con Avatar Circular
                                   DataCell(
                                     SizedBox(
                                       width: colWorker,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            rec.employeeName,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF0F172A),
+                                          Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFFE0F2FE),
+                                              shape: BoxShape.circle,
                                             ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              _getInitials(rec.employeeName),
+                                              style: GoogleFonts.inter(
+                                                color: const Color(0xFF0369A1),
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 11,
+                                              ),
+                                            ),
                                           ),
-                                          const SizedBox(height: 2),
-                                          Text(
-                                            '${rec.employeeId} • ${rec.serviceLineCode}',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 10.5,
-                                              color: const Color(0xFF64748B),
-                                              fontWeight: FontWeight.w500,
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  rec.employeeName,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFF0F172A),
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                                const SizedBox(height: 1),
+                                                Text(
+                                                  '${rec.employeeId} • ${rec.serviceLineCode}',
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 10.5,
+                                                    color: const Color(0xFF64748B),
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
@@ -315,33 +345,27 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     ),
                                   ),
 
-                                  // Dirección IP
+                                  // Dirección IP (Cápsula sutil)
                                   DataCell(
                                     SizedBox(
                                       width: colIp,
-                                      child: Tooltip(
-                                        message: '$cleanIp • $workstation',
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 7,
-                                              vertical: 2.5,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFF1F5F9),
-                                              borderRadius: BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: const Color(0xFFCBD5E1),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              cleanIp,
-                                              style: GoogleFonts.jetBrainsMono(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xFF334155),
-                                              ),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 3,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFF1F5F9),
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            cleanIp,
+                                            style: GoogleFonts.jetBrainsMono(
+                                              fontSize: 10.5,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xFF475569),
                                             ),
                                           ),
                                         ),
@@ -374,12 +398,12 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                         alignment: Alignment.centerLeft,
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
-                                            horizontal: 6,
-                                            vertical: 2,
+                                            horizontal: 8,
+                                            vertical: 3,
                                           ),
                                           decoration: BoxDecoration(
                                             color: const Color(0xFFF8FAFC),
-                                            borderRadius: BorderRadius.circular(4),
+                                            borderRadius: BorderRadius.circular(20),
                                             border: Border.all(
                                               color: const Color(0xFFE2E8F0),
                                             ),
@@ -397,32 +421,62 @@ class EliteOfficePunchesTab extends ConsumerWidget {
                                     ),
                                   ),
 
-                                  // Evaluación
+                                  // Evaluación (Cápsula pastel)
                                   DataCell(
                                     SizedBox(
                                       width: colEvaluation,
                                       child: Align(
                                         alignment: Alignment.centerLeft,
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 7,
-                                            vertical: 2.5,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: rec.evaluation.badgeBgColor,
-                                            borderRadius: BorderRadius.circular(5),
-                                            border: Border.all(
-                                              color: rec.evaluation.badgeBorderColor,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            rec.evaluation.label,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w700,
-                                              color: rec.evaluation.badgeColor,
-                                            ),
-                                          ),
+                                        child: Builder(
+                                          builder: (context) {
+                                            Color bg;
+                                            Color fg;
+                                            IconData icon;
+
+                                            if (rec.evaluation == AttendanceEvaluation.puntual) {
+                                              bg = const Color(0xFFECFDF5);
+                                              fg = const Color(0xFF047857);
+                                              icon = Icons.check_circle_outline;
+                                            } else if (rec.evaluation == AttendanceEvaluation.retraso) {
+                                              bg = const Color(0xFFFFFBEB);
+                                              fg = const Color(0xFFB45309);
+                                              icon = Icons.warning_amber_outlined;
+                                            } else if (rec.evaluation == AttendanceEvaluation.faltaInjustificada) {
+                                              bg = const Color(0xFFFEF2F2);
+                                              fg = const Color(0xFFB91C1C);
+                                              icon = Icons.cancel_outlined;
+                                            } else {
+                                              bg = const Color(0xFFF1F5F9);
+                                              fg = const Color(0xFF475569);
+                                              icon = Icons.timelapse;
+                                            }
+
+                                            return Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 9,
+                                                vertical: 4,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: bg,
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(icon, size: 12, color: fg),
+                                                  const SizedBox(width: 4),
+                                                  Text(
+                                                    rec.evaluation.label,
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 10.5,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: fg,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),

@@ -18,6 +18,13 @@ class _EliteDailyAttendanceTabState
     extends ConsumerState<EliteDailyAttendanceTab> {
   final _searchController = TextEditingController();
 
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -317,13 +324,13 @@ class _EliteDailyAttendanceTabState
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x040F172A),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                      offset: Offset(0, 1),
                     ),
                   ],
                 ),
@@ -360,25 +367,22 @@ class _EliteDailyAttendanceTabState
                       )
                     : LayoutBuilder(
                         builder: (context, constraints) {
-                          // Ajuste al ancho real del contenedor (sin forzar scroll horizontal en pantallas estándar)
-                          final tableWidth = constraints.maxWidth < 1000
-                              ? 1000.0
+                          final tableWidth = constraints.maxWidth < 1100
+                              ? 1100.0
                               : constraints.maxWidth;
 
                           const colSpacing = 12.0;
-                          const horizMargin = 14.0;
-                          // 7 columnas: 6 separaciones entre columnas + 2 márgenes laterales (6*12 + 2*14 = 100px)
+                          const horizMargin = 16.0;
                           const spacingAndMargins = (colSpacing * (7 - 1)) + (horizMargin * 2);
                           final netColumnsWidth = tableWidth - spacingAndMargins;
 
-                          // Distribución proporcional exacta al 100% de las columnas útiles
-                          final colWorker = netColumnsWidth * 0.24;
-                          final colTypeAndLine = netColumnsWidth * 0.12;
-                          final colShiftAndSite = netColumnsWidth * 0.18;
-                          final colEntry = netColumnsWidth * 0.09;
+                          final colWorker = netColumnsWidth * 0.25;
+                          final colTypeAndLine = netColumnsWidth * 0.13;
+                          final colShiftAndSite = netColumnsWidth * 0.19;
+                          final colEntry = netColumnsWidth * 0.08;
                           final colExit = netColumnsWidth * 0.08;
-                          final colOrigin = netColumnsWidth * 0.14;
-                          final colEvaluation = netColumnsWidth * 0.15;
+                          final colOrigin = netColumnsWidth * 0.13;
+                          final colEvaluation = netColumnsWidth * 0.14;
 
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -387,510 +391,465 @@ class _EliteDailyAttendanceTabState
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: DataTable(
-                                  headingRowHeight: 44.0,
-                                  dataRowMinHeight: 48.0,
-                                  dataRowMaxHeight: 52.0,
+                                  headingRowHeight: 46.0,
+                                  dataRowMinHeight: 52.0,
+                                  dataRowMaxHeight: 56.0,
                                   horizontalMargin: horizMargin,
                                   columnSpacing: colSpacing,
-                                    border: const TableBorder(
-                                      horizontalInside: BorderSide(
-                                        color: Color(0xFFF1F5F9),
-                                        width: 1,
+                                  border: const TableBorder(
+                                    horizontalInside: BorderSide(
+                                      color: Color(0xFFF1F5F9),
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  headingRowColor: WidgetStateProperty.all(
+                                    const Color(0xFFF8FAFC),
+                                  ),
+                                  columns: [
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colWorker,
+                                        child: Text(
+                                          'COLABORADOR',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                    headingRowColor: WidgetStateProperty.all(
-                                      const Color(0xFFF8FAFC),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colTypeAndLine,
+                                        child: Text(
+                                          'TIPO Y LÍNEA',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    columns: [
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colWorker,
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colShiftAndSite,
+                                        child: Text(
+                                          'TURNO Y SEDE',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colEntry,
+                                        child: Center(
                                           child: Text(
-                                            'COLABORADOR',
+                                            'ENTRADA',
                                             style: GoogleFonts.inter(
                                               fontSize: 11.5,
                                               fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
+                                              color: const Color(0xFF64748B),
+                                              letterSpacing: 0.6,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colTypeAndLine,
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colExit,
+                                        child: Center(
                                           child: Text(
-                                            'TIPO Y LÍNEA',
+                                            'SALIDA',
                                             style: GoogleFonts.inter(
                                               fontSize: 11.5,
                                               fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
+                                              color: const Color(0xFF64748B),
+                                              letterSpacing: 0.6,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colShiftAndSite,
-                                          child: Text(
-                                            'TURNO Y SEDE',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colOrigin,
+                                        child: Text(
+                                          'ORIGEN',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colEntry,
-                                          child: Center(
-                                            child: Text(
-                                              'ENTRADA',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 11.5,
-                                                fontWeight: FontWeight.w700,
-                                                color: const Color(0xFF475569),
-                                                letterSpacing: 0.5,
-                                              ),
-                                            ),
+                                    ),
+                                    DataColumn(
+                                      label: SizedBox(
+                                        width: colEvaluation,
+                                        child: Text(
+                                          'EVALUACIÓN',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colExit,
-                                          child: Center(
-                                            child: Text(
-                                              'SALIDA',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 11.5,
-                                                fontWeight: FontWeight.w700,
-                                                color: const Color(0xFF475569),
-                                                letterSpacing: 0.5,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colOrigin,
-                                          child: Text(
-                                            'ORIGEN',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: SizedBox(
-                                          width: colEvaluation,
-                                          child: Text(
-                                            'EVALUACIÓN',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 11.5,
-                                              fontWeight: FontWeight.w700,
-                                              color: const Color(0xFF475569),
-                                              letterSpacing: 0.5,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                    rows: filteredRecords.map((rec) {
-                                      final inStr = rec.evaluation ==
-                                              AttendanceEvaluation
-                                                  .faltaInjustificada
-                                          ? 'Sin Registro'
-                                          : DateFormat('HH:mm')
-                                              .format(rec.timestamp);
+                                    ),
+                                  ],
+                                  rows: filteredRecords.map((rec) {
+                                    final inStr = rec.evaluation ==
+                                            AttendanceEvaluation
+                                                .faltaInjustificada
+                                        ? 'Sin Registro'
+                                        : DateFormat('HH:mm')
+                                            .format(rec.timestamp);
 
-                                      final outStr = rec.checkOutTimestamp != null
-                                          ? DateFormat('HH:mm')
-                                              .format(rec.checkOutTimestamp!)
-                                          : '--:--';
+                                    final outStr = rec.checkOutTimestamp != null
+                                        ? DateFormat('HH:mm')
+                                            .format(rec.checkOutTimestamp!)
+                                        : '--:--';
 
-                                      return DataRow(
-                                        cells: [
-                                          // 1. Colaborador: 24% (Nombre en negrita 12.5px + subtítulo con CI y cargo)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colWorker,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    rec.employeeName,
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 12.5,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: const Color(
-                                                          0xFF0F172A),
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  const SizedBox(height: 2),
-                                                  Text(
-                                                    '${rec.employeeJobTitle} • ${rec.employeeId}',
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10.5,
-                                                      color: const Color(
-                                                          0xFF64748B),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                    final isField = rec.workplaceType == EmployeeWorkplaceType.campo;
 
-                                          // 2. Tipo y Línea: 13% (Chip OFICINA/CAMPO + código CC-ADM, CC-SEG, etc.)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colTypeAndLine,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 6,
-                                                        vertical: 2.5,
-                                                      ),
-                                                      decoration: BoxDecoration(
-                                                        color: rec.workplaceType
-                                                            .badgeBgColor,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                        border: Border.all(
-                                                          color: rec
-                                                              .workplaceType
-                                                              .badgeBorderColor,
-                                                        ),
-                                                      ),
-                                                      child: Text(
-                                                        rec.workplaceType.label
-                                                            .toUpperCase(),
-                                                        style:
-                                                            GoogleFonts.inter(
-                                                          fontSize: 9.5,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: rec
-                                                              .workplaceType
-                                                              .badgeColor,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 6),
-                                                    Flexible(
-                                                      child: Container(
-                                                        padding: const EdgeInsets
-                                                            .symmetric(
-                                                          horizontal: 6,
-                                                          vertical: 2.5,
-                                                        ),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: const Color(
-                                                              0xFFF1F5F9),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
-                                                          border: Border.all(
-                                                            color: const Color(
-                                                                0xFFE2E8F0),
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          rec.serviceLineCode,
-                                                          style:
-                                                              GoogleFonts.inter(
-                                                            fontSize: 10,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: const Color(
-                                                                0xFF334155),
-                                                          ),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 3. Turno y Sede: 20% (Nombre de turno 11.5px negrita + sede cliente abajo en 10.5px gris)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colShiftAndSite,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    rec.shiftName,
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 11.5,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: const Color(
-                                                          0xFF0F172A),
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  const SizedBox(height: 1),
-                                                  Text(
-                                                    rec.assignedSite,
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10.5,
-                                                      color: const Color(
-                                                          0xFF64748B),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 4. Entrada: 9% (Hora centrada en tipografía monoespaciada o chip Sin Registro)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colEntry,
-                                              child: Center(
-                                                child: rec.evaluation ==
-                                                        AttendanceEvaluation
-                                                            .faltaInjustificada
-                                                    ? Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 6,
-                                                          vertical: 2,
-                                                        ),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: const Color(
-                                                              0xFFFEF2F2),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
-                                                          border: Border.all(
-                                                            color: const Color(
-                                                                0xFFFCA5A5),
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          'Sin Registro',
-                                                          style:
-                                                              GoogleFonts.inter(
-                                                            fontSize: 9.5,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: const Color(
-                                                                0xFFDC2626),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Text(
-                                                        inStr,
-                                                        style: GoogleFonts
-                                                            .jetBrainsMono(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: const Color(
-                                                              0xFF0F172A),
-                                                        ),
-                                                      ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 5. Salida: 9% (Hora centrada en tipografía monoespaciada)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colExit,
-                                              child: Center(
-                                                child: Text(
-                                                  outStr,
-                                                  style: GoogleFonts
-                                                      .jetBrainsMono(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: const Color(
-                                                        0xFF64748B),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 6. Origen: 12% (Chip azul Web Oficina o chip esmeralda APK GPS Automático)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colOrigin,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 7,
-                                                    vertical: 3,
-                                                  ),
+                                    return DataRow(
+                                      cells: [
+                                        // 1. Colaborador con Avatar Circular
+                                        DataCell(
+                                          SizedBox(
+                                            width: colWorker,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 30,
+                                                  height: 30,
                                                   decoration: BoxDecoration(
-                                                    color: rec
-                                                        .source.badgeBgColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
-                                                    border: Border.all(
-                                                      color: rec.source
-                                                          .badgeBorderColor,
-                                                    ),
+                                                    color: isField
+                                                        ? const Color(0xFFCCFBF1)
+                                                        : const Color(0xFFE0F2FE),
+                                                    shape: BoxShape.circle,
                                                   ),
+                                                  alignment: Alignment.center,
                                                   child: Text(
-                                                    rec.source.label,
+                                                    _getInitials(rec.employeeName),
                                                     style: GoogleFonts.inter(
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color: rec
-                                                          .source.badgeColor,
+                                                      color: isField
+                                                          ? const Color(0xFF0F766E)
+                                                          : const Color(0xFF0369A1),
+                                                      fontWeight: FontWeight.w700,
+                                                      fontSize: 11,
                                                     ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          // 7. Evaluación: 13% (Chip con padding holgado: Puntual, Retraso (8m), En Jornada, Ausente / Falta)
-                                          DataCell(
-                                            SizedBox(
-                                              width: colEvaluation,
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 3.5,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: rec.evaluation
-                                                        .badgeBgColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                    border: Border.all(
-                                                      color: rec.evaluation
-                                                          .badgeBorderColor,
-                                                    ),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
                                                     children: [
-                                                      Icon(
-                                                        rec.evaluation ==
-                                                                AttendanceEvaluation
-                                                                    .puntual
-                                                            ? Icons
-                                                                .check_circle_outline
-                                                            : rec.evaluation ==
-                                                                    AttendanceEvaluation
-                                                                        .retraso
-                                                                ? Icons
-                                                                    .warning_amber_outlined
-                                                                : rec.evaluation ==
-                                                                        AttendanceEvaluation
-                                                                            .faltaInjustificada
-                                                                    ? Icons
-                                                                        .cancel_outlined
-                                                                    : Icons
-                                                                        .timelapse,
-                                                        size: 12,
-                                                        color: rec.evaluation
-                                                            .badgeColor,
-                                                      ),
-                                                      const SizedBox(width: 4),
-                                                      Flexible(
-                                                        child: Text(
-                                                          rec.evaluation ==
-                                                                      AttendanceEvaluation
-                                                                          .retraso &&
-                                                                  rec.lateMinutes >
-                                                                      0
-                                                              ? '${rec.evaluation.label} (${rec.lateMinutes}m)'
-                                                              : rec.evaluation ==
-                                                                      AttendanceEvaluation
-                                                                          .faltaInjustificada
-                                                                  ? 'Ausente / Falta'
-                                                                  : rec.evaluation
-                                                                      .label,
-                                                          style:
-                                                              GoogleFonts.inter(
-                                                            fontSize: 10.5,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color: rec
-                                                                .evaluation
-                                                                .badgeColor,
-                                                          ),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
+                                                      Text(
+                                                        rec.employeeName,
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 13,
+                                                          fontWeight: FontWeight.w700,
+                                                          color: const Color(0xFF0F172A),
                                                         ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      const SizedBox(height: 1),
+                                                      Text(
+                                                        '${rec.employeeJobTitle} • ${rec.employeeId}',
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 10.5,
+                                                          color: const Color(0xFF64748B),
+                                                          fontWeight: FontWeight.w500,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
                                                       ),
                                                     ],
                                                   ),
                                                 ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 2. Tipo y Línea (Píldoras redondeadas suaves)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colTypeAndLine,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Container(
+                                                    padding: const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 3,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: isField
+                                                          ? const Color(0xFFF0FDFA)
+                                                          : const Color(0xFFF0F9FF),
+                                                      borderRadius:
+                                                          BorderRadius.circular(20),
+                                                    ),
+                                                    child: Text(
+                                                      rec.workplaceType.label.toUpperCase(),
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 10,
+                                                        fontWeight: FontWeight.w700,
+                                                        color: isField
+                                                            ? const Color(0xFF0F766E)
+                                                            : const Color(0xFF0369A1),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Flexible(
+                                                    child: Container(
+                                                      padding: const EdgeInsets.symmetric(
+                                                        horizontal: 7,
+                                                        vertical: 3,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(0xFFF1F5F9),
+                                                        borderRadius:
+                                                            BorderRadius.circular(20),
+                                                      ),
+                                                      child: Text(
+                                                        rec.serviceLineCode,
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 10,
+                                                          fontWeight: FontWeight.w600,
+                                                          color: const Color(0xFF475569),
+                                                        ),
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
+                                        ),
+
+                                        // 3. Turno y Sede
+                                        DataCell(
+                                          SizedBox(
+                                            width: colShiftAndSite,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  rec.shiftName,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFF0F172A),
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                                const SizedBox(height: 1),
+                                                Text(
+                                                  rec.assignedSite,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 10.5,
+                                                    color: const Color(0xFF64748B),
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 4. Entrada
+                                        DataCell(
+                                          SizedBox(
+                                            width: colEntry,
+                                            child: Center(
+                                              child: rec.evaluation ==
+                                                      AttendanceEvaluation
+                                                          .faltaInjustificada
+                                                  ? Container(
+                                                      padding: const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 3,
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(0xFFFEF2F2),
+                                                        borderRadius:
+                                                            BorderRadius.circular(20),
+                                                      ),
+                                                      child: Text(
+                                                        'Sin Registro',
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 10,
+                                                          fontWeight: FontWeight.w600,
+                                                          color: const Color(0xFFB91C1C),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      inStr,
+                                                      style: GoogleFonts.jetBrainsMono(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: const Color(0xFF0F172A),
+                                                      ),
+                                                    ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 5. Salida
+                                        DataCell(
+                                          SizedBox(
+                                            width: colExit,
+                                            child: Center(
+                                              child: Text(
+                                                outStr,
+                                                style: GoogleFonts.jetBrainsMono(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: const Color(0xFF64748B),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 6. Origen (Píldora cápsula)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colOrigin,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8,
+                                                  vertical: 3,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xFFF1F5F9),
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: Text(
+                                                  rec.source.label,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 10.5,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: const Color(0xFF475569),
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        // 7. Evaluación (Píldora cápsula pastel)
+                                        DataCell(
+                                          SizedBox(
+                                            width: colEvaluation,
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Builder(
+                                                builder: (context) {
+                                                  Color bg;
+                                                  Color fg;
+                                                  IconData icon;
+
+                                                  if (rec.evaluation == AttendanceEvaluation.puntual) {
+                                                    bg = const Color(0xFFECFDF5);
+                                                    fg = const Color(0xFF047857);
+                                                    icon = Icons.check_circle_outline;
+                                                  } else if (rec.evaluation == AttendanceEvaluation.retraso) {
+                                                    bg = const Color(0xFFFFFBEB);
+                                                    fg = const Color(0xFFB45309);
+                                                    icon = Icons.warning_amber_outlined;
+                                                  } else if (rec.evaluation == AttendanceEvaluation.faltaInjustificada) {
+                                                    bg = const Color(0xFFFEF2F2);
+                                                    fg = const Color(0xFFB91C1C);
+                                                    icon = Icons.cancel_outlined;
+                                                  } else {
+                                                    bg = const Color(0xFFF1F5F9);
+                                                    fg = const Color(0xFF475569);
+                                                    icon = Icons.timelapse;
+                                                  }
+
+                                                  final text = rec.evaluation == AttendanceEvaluation.retraso && rec.lateMinutes > 0
+                                                      ? '${rec.evaluation.label} (${rec.lateMinutes}m)'
+                                                      : rec.evaluation == AttendanceEvaluation.faltaInjustificada
+                                                          ? 'Ausente / Falta'
+                                                          : rec.evaluation.label;
+
+                                                  return Container(
+                                                    padding: const EdgeInsets.symmetric(
+                                                      horizontal: 9,
+                                                      vertical: 4,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: bg,
+                                                      borderRadius: BorderRadius.circular(20),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Icon(icon, size: 13, color: fg),
+                                                        const SizedBox(width: 4),
+                                                        Flexible(
+                                                          child: Text(
+                                                            text,
+                                                            style: GoogleFonts.inter(
+                                                              fontSize: 10.5,
+                                                              fontWeight: FontWeight.w700,
+                                                              color: fg,
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }).toList(),
                                 ),
                               ),
-                            );
+                            ),
+                          );
                         },
                       ),
               ),

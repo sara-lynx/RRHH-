@@ -9,6 +9,13 @@ import '../../providers/elite_rrhh_providers.dart';
 class EliteEmployeeDirectoryTab extends ConsumerWidget {
   const EliteEmployeeDirectoryTab({super.key});
 
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final employees = ref.watch(rrhhFilteredEmployeesProvider);
@@ -246,358 +253,174 @@ class EliteEmployeeDirectoryTab extends ConsumerWidget {
         ),
 
         // ---------------------------------------------------------------------
-        // TABLA EN EXPANDED (80% DEL ESPACIO VERTICAL ÚTIL)
+        // TABLA EN EXPANDED DENTRO DE TARJETA CORPORATIVA
         // ---------------------------------------------------------------------
         Expanded(
-          child: Container(
-            color: Colors.white,
-            child: employees.isEmpty
-                ? _buildEmptyState()
-                : LayoutBuilder(
-                    builder: (context, constraints) {
-                      final tableWidth = constraints.maxWidth < 1000
-                          ? 1000.0
-                          : constraints.maxWidth;
-                      const horizMargin = 12.0;
-                      final netColumnsWidth = tableWidth - (horizMargin * 2);
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x040F172A),
+                    blurRadius: 4,
+                    offset: Offset(0, 1),
+                  ),
+                ],
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: employees.isEmpty
+                  ? _buildEmptyState()
+                  : LayoutBuilder(
+                      builder: (context, constraints) {
+                        final tableWidth = constraints.maxWidth < 1100
+                            ? 1100.0
+                            : constraints.maxWidth;
+                        const horizMargin = 16.0;
+                        final netColumnsWidth = tableWidth - (horizMargin * 2);
 
-                      final colCi = netColumnsWidth * 0.10;
-                      final colEmployee = netColumnsWidth * 0.20;
-                      final colType = netColumnsWidth * 0.08;
-                      final colCostCenter = netColumnsWidth * 0.10;
-                      final colPosition = netColumnsWidth * 0.16;
-                      final colSite = netColumnsWidth * 0.16;
-                      final colStatus = netColumnsWidth * 0.12;
-                      final colActions = netColumnsWidth * 0.08;
+                        final colCi = netColumnsWidth * 0.10;
+                        final colEmployee = netColumnsWidth * 0.22;
+                        final colType = netColumnsWidth * 0.09;
+                        final colCostCenter = netColumnsWidth * 0.10;
+                        final colPosition = netColumnsWidth * 0.16;
+                        final colSite = netColumnsWidth * 0.15;
+                        final colStatus = netColumnsWidth * 0.11;
+                        final colActions = netColumnsWidth * 0.07;
 
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          width: tableWidth,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: DataTable(
-                              headingRowHeight: 44.0,
-                              dataRowMinHeight: 48.0,
-                              dataRowMaxHeight: 54.0,
-                              horizontalMargin: horizMargin,
-                              columnSpacing: 0,
-                              headingRowColor: const WidgetStatePropertyAll(
-                                Color(0xFFF8FAFC),
-                              ),
-                              dividerThickness: 1,
-                              border: const TableBorder(
-                                horizontalInside: BorderSide(
-                                  color: Color(0xFFF1F5F9),
-                                  width: 1,
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SizedBox(
+                            width: tableWidth,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: DataTable(
+                                headingRowHeight: 46.0,
+                                dataRowMinHeight: 52.0,
+                                dataRowMaxHeight: 56.0,
+                                horizontalMargin: horizMargin,
+                                columnSpacing: 0,
+                                headingRowColor: const WidgetStatePropertyAll(
+                                  Color(0xFFF8FAFC),
                                 ),
-                              ),
-                              columns: [
-                                _buildColumnHeader('CI / CÓDIGO', colCi),
-                                _buildColumnHeader('COLABORADOR', colEmployee),
-                                _buildColumnHeader('TIPO', colType),
-                                _buildColumnHeader('CENTRO COSTO', colCostCenter),
-                                _buildColumnHeader('CARGO', colPosition),
-                                _buildColumnHeader('SEDE ASIGNADA', colSite),
-                                _buildColumnHeader('ESTADO', colStatus),
-                                _buildColumnHeader('ACCIONES', colActions),
-                              ],
-                              rows: employees.map((emp) {
-                                return DataRow(
-                                  cells: [
-                                    // 1. CI / Código
-                                    DataCell(
-                                      SizedBox(
-                                        width: colCi,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              emp.ci,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xFF0F172A),
-                                              ),
-                                            ),
-                                            Text(
-                                              emp.id,
-                                              style: GoogleFonts.jetBrainsMono(
-                                                fontSize: 10,
-                                                color: const Color(0xFF64748B),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                border: const TableBorder(
+                                  horizontalInside: BorderSide(
+                                    color: Color(0xFFF1F5F9),
+                                    width: 1.0,
+                                  ),
+                                ),
+                                columns: [
+                                  _buildColumnHeader('CI / CÓDIGO', colCi),
+                                  _buildColumnHeader('COLABORADOR', colEmployee),
+                                  _buildColumnHeader('TIPO', colType),
+                                  _buildColumnHeader('CENTRO COSTO', colCostCenter),
+                                  _buildColumnHeader('CARGO', colPosition),
+                                  _buildColumnHeader('SEDE ASIGNADA', colSite),
+                                  _buildColumnHeader('ESTADO', colStatus),
+                                  _buildColumnHeader('ACCIONES', colActions),
+                                ],
+                                rows: employees.map((emp) {
+                                  final isField = emp.workplaceType == EmployeeWorkplaceType.campo;
 
-                                    // 2. Colaborador (Nombre y Teléfono)
-                                    DataCell(
-                                      SizedBox(
-                                        width: colEmployee,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              emp.fullName,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 12.5,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xFF0F172A),
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                  Icons.phone_outlined,
-                                                  size: 11,
-                                                  color: Color(0xFF64748B),
-                                                ),
-                                                const SizedBox(width: 4),
-                                                Flexible(
-                                                  child: Text(
-                                                    emp.phone,
-                                                    style: GoogleFonts.inter(
-                                                      fontSize: 10.5,
-                                                      color:
-                                                          const Color(0xFF64748B),
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    // 3. Tipo (Chip azul / esmeralda)
-                                    DataCell(
-                                      SizedBox(
-                                        width: colType,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 7,
-                                              vertical: 2.5,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: emp.workplaceType.badgeBgColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: emp.workplaceType
-                                                    .badgeBorderColor,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              emp.workplaceType.label,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 10.5,
-                                                fontWeight: FontWeight.w700,
-                                                color:
-                                                    emp.workplaceType.badgeColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // 4. Centro de Costo (CC-SEG, etc.)
-                                    DataCell(
-                                      SizedBox(
-                                        width: colCostCenter,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFF8FAFC),
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: const Color(0xFFE2E8F0),
-                                              ),
-                                            ),
-                                            child: Text(
-                                              emp.serviceLineCode,
-                                              style: GoogleFonts.jetBrainsMono(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w600,
-                                                color: const Color(0xFF334155),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // 5. Cargo
-                                    DataCell(
-                                      SizedBox(
-                                        width: colPosition,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            emp.position,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 12,
-                                              color: const Color(0xFF334155),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // 6. Sede Asignada
-                                    DataCell(
-                                      SizedBox(
-                                        width: colSite,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              emp.isOffice
-                                                  ? Icons.apartment_outlined
-                                                  : Icons.place_outlined,
-                                              size: 13,
-                                              color: emp.isOffice
-                                                  ? const Color(0xFF2563EB)
-                                                  : const Color(0xFF0D9488),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Flexible(
-                                              child: Text(
-                                                emp.assignedSite,
+                                  return DataRow(
+                                    cells: [
+                                      // 1. CI / Código
+                                      DataCell(
+                                        SizedBox(
+                                          width: colCi,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                emp.ci,
                                                 style: GoogleFonts.inter(
                                                   fontSize: 12,
-                                                  color: const Color(0xFF334155),
+                                                  fontWeight: FontWeight.w600,
+                                                  color: const Color(0xFF0F172A),
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    // 7. Estado
-                                    DataCell(
-                                      SizedBox(
-                                        width: colStatus,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 7,
-                                              vertical: 2.5,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: emp.status.badgeBgColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: emp.status.badgeBorderColor,
+                                              Text(
+                                                emp.id,
+                                                style: GoogleFonts.jetBrainsMono(
+                                                  fontSize: 10,
+                                                  color: const Color(0xFF64748B),
+                                                ),
                                               ),
-                                            ),
-                                            child: Text(
-                                              emp.status.label,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 10.5,
-                                                fontWeight: FontWeight.w600,
-                                                color: emp.status.badgeColor,
-                                              ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ),
 
-                                    // 8. Acciones
-                                    DataCell(
-                                      SizedBox(
-                                        width: colActions,
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: PopupMenuButton<String>(
-                                            icon: const Icon(
-                                              Icons.more_horiz,
-                                              size: 18,
-                                              color: Color(0xFF64748B),
-                                            ),
-                                            tooltip: 'Opciones',
-                                            padding: EdgeInsets.zero,
-                                            color: Colors.white,
-                                            elevation: 2,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              side: const BorderSide(
-                                                color: Color(0xFFE2E8F0),
-                                              ),
-                                            ),
-                                            onSelected: (action) {
-                                              if (action == 'baja') {
-                                                _showTerminateDialog(
-                                                    context, ref, emp);
-                                              } else if (action == 'detalle') {
-                                                _showDetailDialog(context, emp);
-                                              }
-                                            },
-                                            itemBuilder: (ctx) => [
-                                              PopupMenuItem(
-                                                value: 'detalle',
-                                                child: Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.visibility_outlined,
-                                                      size: 16,
-                                                      color: Color(0xFF334155),
-                                                    ),
-                                                    const SizedBox(width: 8),
-                                                    Text(
-                                                      'Ver Expediente',
-                                                      style: GoogleFonts.inter(
-                                                          fontSize: 12),
-                                                    ),
-                                                  ],
+                                      // 2. Colaborador con Avatar Circular
+                                      DataCell(
+                                        SizedBox(
+                                          width: colEmployee,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: isField
+                                                      ? const Color(0xFFCCFBF1)
+                                                      : const Color(0xFFE0F2FE),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  _getInitials(emp.fullName),
+                                                  style: GoogleFonts.inter(
+                                                    color: isField
+                                                        ? const Color(0xFF0F766E)
+                                                        : const Color(0xFF0369A1),
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 11,
+                                                  ),
                                                 ),
                                               ),
-                                              PopupMenuItem(
-                                                value: 'baja',
-                                                child: Row(
+                                              const SizedBox(width: 8),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    const Icon(
-                                                      Icons
-                                                          .person_remove_outlined,
-                                                      size: 16,
-                                                      color: Color(0xFFDC2626),
-                                                    ),
-                                                    const SizedBox(width: 8),
                                                     Text(
-                                                      'Registrar Baja',
+                                                      emp.fullName,
                                                       style: GoogleFonts.inter(
-                                                        fontSize: 12,
-                                                        color: const Color(
-                                                            0xFFDC2626),
+                                                        fontSize: 13,
+                                                        fontWeight: FontWeight.w700,
+                                                        color: const Color(0xFF0F172A),
                                                       ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                    const SizedBox(height: 1),
+                                                    Row(
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.phone_outlined,
+                                                          size: 11,
+                                                          color: Color(0xFF64748B),
+                                                        ),
+                                                        const SizedBox(width: 3),
+                                                        Flexible(
+                                                          child: Text(
+                                                            emp.phone,
+                                                            style: GoogleFonts.inter(
+                                                              fontSize: 10.5,
+                                                              color: const Color(0xFF64748B),
+                                                            ),
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
@@ -606,16 +429,253 @@ class EliteEmployeeDirectoryTab extends ConsumerWidget {
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
+
+                                      // 3. Tipo (Píldora cápsula suave)
+                                      DataCell(
+                                        SizedBox(
+                                          width: colType,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                                vertical: 3,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: isField
+                                                    ? const Color(0xFFF0FDFA)
+                                                    : const Color(0xFFF0F9FF),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: Text(
+                                                emp.workplaceType.label,
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: isField
+                                                      ? const Color(0xFF0F766E)
+                                                      : const Color(0xFF0369A1),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      // 4. Centro de Costo (Píldora cápsula suave)
+                                      DataCell(
+                                        SizedBox(
+                                          width: colCostCenter,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                                vertical: 3,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFFF1F5F9),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: Text(
+                                                emp.serviceLineCode,
+                                                style: GoogleFonts.jetBrainsMono(
+                                                  fontSize: 10.5,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: const Color(0xFF475569),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      // 5. Cargo
+                                      DataCell(
+                                        SizedBox(
+                                          width: colPosition,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              emp.position,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 12,
+                                                color: const Color(0xFF334155),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      // 6. Sede Asignada
+                                      DataCell(
+                                        SizedBox(
+                                          width: colSite,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                emp.isOffice
+                                                    ? Icons.apartment_outlined
+                                                    : Icons.place_outlined,
+                                                size: 13,
+                                                color: emp.isOffice
+                                                    ? const Color(0xFF2563EB)
+                                                    : const Color(0xFF0D9488),
+                                              ),
+                                              const SizedBox(width: 5),
+                                              Flexible(
+                                                child: Text(
+                                                  emp.assignedSite,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 12,
+                                                    color: const Color(0xFF334155),
+                                                  ),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                      // 7. Estado (Píldora cápsula pastel)
+                                      DataCell(
+                                        SizedBox(
+                                          width: colStatus,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Builder(
+                                              builder: (context) {
+                                                Color bg;
+                                                Color fg;
+                                                if (emp.status == EmployeeStatus.activo) {
+                                                  bg = const Color(0xFFECFDF5);
+                                                  fg = const Color(0xFF047857);
+                                                } else if (emp.status == EmployeeStatus.deBaja) {
+                                                  bg = const Color(0xFFFEF2F2);
+                                                  fg = const Color(0xFFB91C1C);
+                                                } else {
+                                                  bg = const Color(0xFFFFFBEB);
+                                                  fg = const Color(0xFFB45309);
+                                                }
+
+                                                return Container(
+                                                  padding: const EdgeInsets.symmetric(
+                                                    horizontal: 9,
+                                                    vertical: 4,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: bg,
+                                                    borderRadius:
+                                                        BorderRadius.circular(20),
+                                                  ),
+                                                  child: Text(
+                                                    emp.status.label,
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 10.5,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: fg,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      // 8. Acciones
+                                      DataCell(
+                                        SizedBox(
+                                          width: colActions,
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: PopupMenuButton<String>(
+                                              icon: const Icon(
+                                                Icons.more_horiz,
+                                                size: 18,
+                                                color: Color(0xFF64748B),
+                                              ),
+                                              tooltip: 'Opciones',
+                                              padding: EdgeInsets.zero,
+                                              color: Colors.white,
+                                              elevation: 2,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                side: const BorderSide(
+                                                  color: Color(0xFFE2E8F0),
+                                                ),
+                                              ),
+                                              onSelected: (action) {
+                                                if (action == 'baja') {
+                                                  _showTerminateDialog(
+                                                      context, ref, emp);
+                                                } else if (action == 'detalle') {
+                                                  _showDetailDialog(context, emp);
+                                                }
+                                              },
+                                              itemBuilder: (ctx) => [
+                                                PopupMenuItem(
+                                                  value: 'detalle',
+                                                  child: Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.visibility_outlined,
+                                                        size: 16,
+                                                        color: Color(0xFF334155),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      Text(
+                                                        'Ver Expediente',
+                                                        style: GoogleFonts.inter(
+                                                            fontSize: 12),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                PopupMenuItem(
+                                                  value: 'baja',
+                                                  child: Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons
+                                                            .person_remove_outlined,
+                                                        size: 16,
+                                                        color: Color(0xFFDC2626),
+                                                      ),
+                                                      const SizedBox(width: 8),
+                                                      Text(
+                                                        'Registrar Baja',
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 12,
+                                                          color: const Color(
+                                                              0xFFDC2626),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
+            ),
           ),
         ),
       ],
@@ -629,10 +689,10 @@ class EliteEmployeeDirectoryTab extends ConsumerWidget {
         child: Text(
           label,
           style: GoogleFonts.inter(
-            fontSize: 10.5,
+            fontSize: 11.5,
             fontWeight: FontWeight.w700,
-            color: const Color(0xFF475569),
-            letterSpacing: 0.3,
+            color: const Color(0xFF64748B),
+            letterSpacing: 0.6,
           ),
           overflow: TextOverflow.ellipsis,
         ),

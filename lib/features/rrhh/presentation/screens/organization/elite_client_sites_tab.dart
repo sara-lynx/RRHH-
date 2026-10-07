@@ -68,228 +68,236 @@ class EliteClientSitesTab extends ConsumerWidget {
           ),
         ),
 
-        // Tabla en Expanded (80% del espacio)
+        // Tabla en Expanded (dentro de Tarjeta Corporativa)
         Expanded(
-          child: Container(
-            color: Colors.white,
-            child: SingleChildScrollView(
-              child: SizedBox(
-                width: double.infinity,
-                child: DataTable(
-                  headingRowHeight: 36,
-                  dataRowMinHeight: 38,
-                  dataRowMaxHeight: 46,
-                  horizontalMargin: 16,
-                  columnSpacing: 16,
-                  headingRowColor: const WidgetStatePropertyAll(
-                    Color(0xFFF8FAFC),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x040F172A),
+                    blurRadius: 4,
+                    offset: Offset(0, 1),
                   ),
-                  dividerThickness: 1,
-                  border: const TableBorder(
-                    horizontalInside: BorderSide(
-                      color: Color(0xFFF1F5F9),
-                      width: 1,
+                ],
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: DataTable(
+                    headingRowHeight: 46.0,
+                    dataRowMinHeight: 52.0,
+                    dataRowMaxHeight: 56.0,
+                    horizontalMargin: 16,
+                    columnSpacing: 16,
+                    headingRowColor: const WidgetStatePropertyAll(
+                      Color(0xFFF8FAFC),
                     ),
-                  ),
-                  columns: [
-                    _buildColumnHeader('CÓDIGO', 120),
-                    _buildColumnHeader('SEDE / CLIENTE', 220),
-                    _buildColumnHeader('CENTRO COSTO', 140),
-                    _buildColumnHeader('COORDENADAS GPS', 200),
-                    _buildColumnHeader('RADIO GEOCERCA', 140),
-                    _buildColumnHeader('DOTACIÓN (REQ / CUB)', 160),
-                    _buildColumnHeader('ESTADO COBERTURA', 140),
-                  ],
-                  rows: sites.map((site) {
-                    final isCovered = site.isFullyCovered;
+                    border: const TableBorder(
+                      horizontalInside: BorderSide(
+                        color: Color(0xFFF1F5F9),
+                        width: 1.0,
+                      ),
+                    ),
+                    columns: [
+                      _buildColumnHeader('CÓDIGO', 120),
+                      _buildColumnHeader('SEDE / CLIENTE', 220),
+                      _buildColumnHeader('CENTRO COSTO', 140),
+                      _buildColumnHeader('COORDENADAS GPS', 200),
+                      _buildColumnHeader('RADIO GEOCERCA', 140),
+                      _buildColumnHeader('DOTACIÓN (REQ / CUB)', 160),
+                      _buildColumnHeader('ESTADO COBERTURA', 140),
+                    ],
+                    rows: sites.map((site) {
+                      final isCovered = site.isFullyCovered;
 
-                    return DataRow(
-                      cells: [
-                        // Código
-                        DataCell(
-                          Text(
-                            site.code,
-                            style: GoogleFonts.jetBrainsMono(
-                              fontSize: 11.5,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF0F172A),
+                      return DataRow(
+                        cells: [
+                          // Código
+                          DataCell(
+                            Text(
+                              site.code,
+                              style: GoogleFonts.jetBrainsMono(
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF0F172A),
+                              ),
                             ),
                           ),
-                        ),
 
-                        // Sede / Cliente
-                        DataCell(
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.business_outlined,
-                                size: 14,
-                                color: Color(0xFF64748B),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                site.name,
-                                style: GoogleFonts.inter(
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF0F172A),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Centro de Costo
-                        DataCell(
-                          Text(
-                            EliteCostCenter.getLabel(site.serviceLineCode),
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: const Color(0xFF334155),
-                            ),
-                          ),
-                        ),
-
-                        // Coordenadas GPS
-                        DataCell(
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.my_location,
-                                size: 12,
-                                color: Color(0xFF0D9488),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                '${site.latitude.toStringAsFixed(4)}, ${site.longitude.toStringAsFixed(4)}',
-                                style: GoogleFonts.jetBrainsMono(
-                                  fontSize: 11.5,
-                                  color: const Color(0xFF334155),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Radio Geocerca
-                        DataCell(
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFEFF6FF),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(color: const Color(0xFFDBEAFE)),
-                            ),
-                            child: Row(
+                          // Sede / Cliente
+                          DataCell(
+                            Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 const Icon(
-                                  Icons.radar,
-                                  size: 11,
-                                  color: Color(0xFF2563EB),
+                                  Icons.business_outlined,
+                                  size: 15,
+                                  color: Color(0xFF64748B),
                                 ),
-                                const SizedBox(width: 4),
+                                const SizedBox(width: 8),
                                 Text(
-                                  '${site.geofenceRadiusMeters.toInt()} metros',
+                                  site.name,
                                   style: GoogleFonts.inter(
-                                    fontSize: 10.5,
-                                    fontWeight: FontWeight.w600,
-                                    color: const Color(0xFF1E40AF),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF0F172A),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
 
-                        // Dotación
-                        DataCell(
-                          Text(
-                            '${site.currentAssigned} cubiertos de ${site.requiredPersonnel} pactados',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xFF334155),
+                          // Centro de Costo
+                          DataCell(
+                            Text(
+                              EliteCostCenter.getLabel(site.serviceLineCode),
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: const Color(0xFF475569),
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
 
-                        // Estado Cobertura
-                        DataCell(
-                          isCovered
-                              ? Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 7,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFF0FDF4),
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                      color: const Color(0xFFDCFCE7),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.check_circle_outline,
-                                        size: 11,
-                                        color: Color(0xFF16A34A),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        '100% Cubierto',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 10.5,
-                                          fontWeight: FontWeight.w600,
-                                          color: const Color(0xFF16A34A),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 7,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFFEF2F2),
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                      color: const Color(0xFFFECACA),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.warning_amber_rounded,
-                                        size: 11,
-                                        color: Color(0xFFDC2626),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Puesto Descubierto',
-                                        style: GoogleFonts.inter(
-                                          fontSize: 10.5,
-                                          fontWeight: FontWeight.w600,
-                                          color: const Color(0xFFDC2626),
-                                        ),
-                                      ),
-                                    ],
+                          // Coordenadas GPS
+                          DataCell(
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.my_location,
+                                  size: 12,
+                                  color: Color(0xFF0D9488),
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  '${site.latitude.toStringAsFixed(4)}, ${site.longitude.toStringAsFixed(4)}',
+                                  style: GoogleFonts.jetBrainsMono(
+                                    fontSize: 11.5,
+                                    color: const Color(0xFF475569),
                                   ),
                                 ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                              ],
+                            ),
+                          ),
+
+                          // Radio Geocerca (Píldora cápsula suave)
+                          DataCell(
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFEFF6FF),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.radar,
+                                    size: 12,
+                                    color: Color(0xFF2563EB),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${site.geofenceRadiusMeters.toInt()} metros',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 10.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xFF1E40AF),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          // Dotación
+                          DataCell(
+                            Text(
+                              '${site.currentAssigned} cubiertos de ${site.requiredPersonnel} pactados',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xFF334155),
+                              ),
+                            ),
+                          ),
+
+                          // Estado Cobertura (Píldora cápsula suave)
+                          DataCell(
+                            isCovered
+                                ? Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 9,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFECFDF5),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.check_circle_outline,
+                                          size: 12,
+                                          color: Color(0xFF047857),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '100% Cubierto',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFF047857),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 9,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFFEF2F2),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.warning_amber_rounded,
+                                          size: 12,
+                                          color: Color(0xFFB91C1C),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Puesto Descubierto',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 10.5,
+                                            fontWeight: FontWeight.w700,
+                                            color: const Color(0xFFB91C1C),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ),
@@ -304,10 +312,10 @@ class EliteClientSitesTab extends ConsumerWidget {
       label: Text(
         label,
         style: GoogleFonts.inter(
-          fontSize: 10.5,
+          fontSize: 11.5,
           fontWeight: FontWeight.w700,
-          color: const Color(0xFF475569),
-          letterSpacing: 0.3,
+          color: const Color(0xFF64748B),
+          letterSpacing: 0.6,
         ),
       ),
     );

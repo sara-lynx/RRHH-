@@ -23,6 +23,13 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
     super.dispose();
   }
 
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     final records = ref.watch(rrhhFilteredDisciplinaryProvider);
@@ -212,17 +219,17 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
           // ===================================================================
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              padding: const EdgeInsets.all(16),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x040F172A),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                      offset: Offset(0, 1),
                     ),
                   ],
                 ),
@@ -251,20 +258,20 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                       )
                     : LayoutBuilder(
                         builder: (context, constraints) {
-                          final tableWidth = constraints.maxWidth < 980
-                              ? 980.0
+                          final tableWidth = constraints.maxWidth < 1180
+                              ? 1180.0
                               : constraints.maxWidth;
-                          const horizMargin = 12.0;
+                          const horizMargin = 16.0;
                           final netColumnsWidth = tableWidth - (horizMargin * 2);
 
                           // Reparto proporcional al 100%
                           final colCode = netColumnsWidth * 0.11;
                           final colDate = netColumnsWidth * 0.08;
-                          final colEmployee = netColumnsWidth * 0.19;
-                          final colCostCenter = netColumnsWidth * 0.11;
+                          final colEmployee = netColumnsWidth * 0.22;
+                          final colCostCenter = netColumnsWidth * 0.12;
                           final colSeverity = netColumnsWidth * 0.10;
-                          final colInfraction = netColumnsWidth * 0.18;
-                          final colSanction = netColumnsWidth * 0.15;
+                          final colInfraction = netColumnsWidth * 0.16;
+                          final colSanction = netColumnsWidth * 0.13;
                           final colActions = netColumnsWidth * 0.08;
 
                           return SingleChildScrollView(
@@ -274,19 +281,19 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: DataTable(
-                                  headingRowHeight: 44.0,
-                                  dataRowMinHeight: 48.0,
-                                  dataRowMaxHeight: 52.0,
+                                  headingRowHeight: 46.0,
+                                  dataRowMinHeight: 52.0,
+                                  dataRowMaxHeight: 56.0,
                                   horizontalMargin: horizMargin,
                                   columnSpacing: 0,
                                   border: const TableBorder(
                                     horizontalInside: BorderSide(
                                       color: Color(0xFFF1F5F9),
-                                      width: 1,
+                                      width: 1.0,
                                     ),
                                   ),
-                                  headingRowColor: WidgetStateProperty.all(
-                                    const Color(0xFFF8FAFC),
+                                  headingRowColor: const WidgetStatePropertyAll(
+                                    Color(0xFFF8FAFC),
                                   ),
                                   columns: [
                                     DataColumn(
@@ -297,8 +304,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -311,8 +318,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -325,8 +332,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -339,8 +346,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -353,8 +360,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -367,8 +374,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -381,8 +388,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -395,8 +402,8 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           style: GoogleFonts.inter(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w700,
-                                            color: const Color(0xFF475569),
-                                            letterSpacing: 0.5,
+                                            color: const Color(0xFF64748B),
+                                            letterSpacing: 0.6,
                                           ),
                                         ),
                                       ),
@@ -405,6 +412,9 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                   rows: records.map((item) {
                                     final dateStr =
                                         '${item.date.day.toString().padLeft(2, '0')}/${item.date.month.toString().padLeft(2, '0')}/${item.date.year}';
+                                    final isOffice = item.workplaceType == EmployeeWorkplaceType.oficina;
+                                    final avatarBg = isOffice ? const Color(0xFFE0F2FE) : const Color(0xFFCCFBF1);
+                                    final avatarText = isOffice ? const Color(0xFF0369A1) : const Color(0xFF0F766E);
 
                                     return DataRow(
                                       cells: [
@@ -414,14 +424,11 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                             width: colCode,
                                             child: Container(
                                               padding: const EdgeInsets.symmetric(
-                                                  horizontal: 6, vertical: 2),
+                                                  horizontal: 8, vertical: 3),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xFFF1F5F9),
                                                 borderRadius:
-                                                    BorderRadius.circular(4),
-                                                border: Border.all(
-                                                    color:
-                                                        const Color(0xFFE2E8F0)),
+                                                    BorderRadius.circular(6),
                                               ),
                                               child: Text(
                                                 item.memorandumCode,
@@ -449,34 +456,50 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           ),
                                         ),
 
-                                        // Colaborador
+                                        // Colaborador con Avatar 30x30
                                         DataCell(
                                           SizedBox(
                                             width: colEmployee,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            child: Row(
                                               children: [
-                                                Text(
-                                                  item.employeeName,
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                    color:
-                                                        const Color(0xFF0F172A),
+                                                CircleAvatar(
+                                                  radius: 15,
+                                                  backgroundColor: avatarBg,
+                                                  child: Text(
+                                                    _getInitials(item.employeeName),
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 11,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: avatarText,
+                                                    ),
                                                   ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                 ),
-                                                Text(
-                                                  item.employeeId,
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 10.5,
-                                                    color:
-                                                        const Color(0xFF64748B),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        item.employeeName,
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 12.5,
+                                                          fontWeight: FontWeight.w700,
+                                                          color: const Color(0xFF0F172A),
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      Text(
+                                                        item.employeeId,
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 10.5,
+                                                          color: const Color(0xFF64748B),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ],
@@ -494,15 +517,12 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                                   padding:
                                                       const EdgeInsets.symmetric(
                                                           horizontal: 6,
-                                                          vertical: 2),
+                                                          vertical: 2.5),
                                                   decoration: BoxDecoration(
                                                     color:
                                                         const Color(0xFFF1F5F9),
                                                     borderRadius:
-                                                        BorderRadius.circular(4),
-                                                    border: Border.all(
-                                                        color: const Color(
-                                                            0xFFE2E8F0)),
+                                                        BorderRadius.circular(6),
                                                   ),
                                                   child: Text(
                                                     item.serviceLineCode,
@@ -516,12 +536,15 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                                   ),
                                                 ),
                                                 const SizedBox(width: 6),
-                                                Text(
-                                                  item.workplaceType.label,
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 11,
-                                                    color:
-                                                        const Color(0xFF64748B),
+                                                Flexible(
+                                                  child: Text(
+                                                    item.workplaceType.label,
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 11,
+                                                      color:
+                                                          const Color(0xFF64748B),
+                                                    ),
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                               ],
@@ -529,7 +552,7 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           ),
                                         ),
 
-                                        // Gravedad (Chip amarillo, naranja o rojo)
+                                        // Gravedad (Cápsula redondeada 20)
                                         DataCell(
                                           SizedBox(
                                             width: colSeverity,
@@ -538,17 +561,13 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                               child: Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 7,
-                                                        vertical: 2.5),
+                                                        horizontal: 8,
+                                                        vertical: 3),
                                                 decoration: BoxDecoration(
                                                   color:
                                                       item.severity.badgeBgColor,
                                                   borderRadius:
-                                                      BorderRadius.circular(5),
-                                                  border: Border.all(
-                                                    color: item
-                                                        .severity.badgeBorderColor,
-                                                  ),
+                                                      BorderRadius.circular(20),
                                                 ),
                                                 child: Text(
                                                   item.severity.label,
@@ -597,7 +616,7 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                           ),
                                         ),
 
-                                        // Acción (Ver Memo)
+                                        // Acción (Ver Memo - Botón Cápsula)
                                         DataCell(
                                           SizedBox(
                                             width: colActions,
@@ -615,20 +634,20 @@ class _EliteMemorandumsTabState extends ConsumerState<EliteMemorandumsTab> {
                                                 },
                                                 style: OutlinedButton.styleFrom(
                                                   side: const BorderSide(
-                                                    color: Color(0xFFCBD5E1),
+                                                    color: Color(0xFFE2E8F0),
                                                   ),
                                                   backgroundColor: Colors.white,
                                                   elevation: 0,
                                                   padding:
                                                       const EdgeInsets.symmetric(
-                                                    horizontal: 8,
+                                                    horizontal: 10,
                                                     vertical: 0,
                                                   ),
                                                   minimumSize:
-                                                      const Size(0, 26),
+                                                      const Size(0, 28),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
-                                                        BorderRadius.circular(4),
+                                                        BorderRadius.circular(8),
                                                   ),
                                                 ),
                                                 child: Text(

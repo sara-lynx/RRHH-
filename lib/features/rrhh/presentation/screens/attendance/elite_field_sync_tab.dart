@@ -10,6 +10,13 @@ import 'elite_field_evidence_dialog.dart';
 class EliteFieldSyncTab extends ConsumerWidget {
   const EliteFieldSyncTab({super.key});
 
+  String _getInitials(String name) {
+    final parts = name.trim().split(RegExp(r'\s+'));
+    if (parts.isEmpty || parts[0].isEmpty) return '--';
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+    return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final allRecords = ref.watch(rrhhAttendanceProvider);
@@ -162,35 +169,35 @@ class EliteFieldSyncTab extends ConsumerWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
                   boxShadow: const [
                     BoxShadow(
                       color: Color(0x040F172A),
-                      blurRadius: 6,
-                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                      offset: Offset(0, 1),
                     ),
                   ],
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final tableWidth = constraints.maxWidth < 1050
-                        ? 1050.0
+                    final tableWidth = constraints.maxWidth < 1360
+                        ? 1360.0
                         : constraints.maxWidth;
 
-                    const horizMargin = 12.0;
+                    const horizMargin = 16.0;
                     final netColumnsWidth = tableWidth - (horizMargin * 2);
 
-                    // Distribución proporcional 100% full-width
+                    // Distribución holgada y espaciosa - Cero choques de cabecera
                     final colWorker = netColumnsWidth * 0.18;
                     final colPunchTime = netColumnsWidth * 0.08;
-                    final colSite = netColumnsWidth * 0.14;
-                    final colGps = netColumnsWidth * 0.13;
-                    final colDistance = netColumnsWidth * 0.08;
-                    final colGeofence = netColumnsWidth * 0.12;
-                    final colMethod = netColumnsWidth * 0.14;
-                    final colTelemetry = netColumnsWidth * 0.13;
+                    final colSite = netColumnsWidth * 0.13;
+                    final colGps = netColumnsWidth * 0.12;
+                    final colDistance = netColumnsWidth * 0.12;
+                    final colGeofence = netColumnsWidth * 0.13;
+                    final colMethod = netColumnsWidth * 0.12;
+                    final colTelemetry = netColumnsWidth * 0.12;
 
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -199,15 +206,15 @@ class EliteFieldSyncTab extends ConsumerWidget {
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                             child: DataTable(
-                              headingRowHeight: 44.0,
-                              dataRowMinHeight: 48.0,
-                              dataRowMaxHeight: 52.0,
-                              horizontalMargin: 12,
+                              headingRowHeight: 46.0,
+                              dataRowMinHeight: 52.0,
+                              dataRowMaxHeight: 56.0,
+                              horizontalMargin: horizMargin,
                               columnSpacing: 0,
                               border: const TableBorder(
                                 horizontalInside: BorderSide(
                                   color: Color(0xFFF1F5F9),
-                                  width: 1,
+                                  width: 1.0,
                                 ),
                               ),
                               headingRowColor: WidgetStateProperty.all(
@@ -222,8 +229,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -236,8 +243,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -250,8 +257,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -264,8 +271,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -278,8 +285,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -292,8 +299,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -306,8 +313,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -320,8 +327,8 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       style: GoogleFonts.inter(
                                         fontSize: 11.5,
                                         fontWeight: FontWeight.w700,
-                                        color: const Color(0xFF475569),
-                                        letterSpacing: 0.5,
+                                        color: const Color(0xFF64748B),
+                                        letterSpacing: 0.6,
                                       ),
                                     ),
                                   ),
@@ -338,36 +345,60 @@ class EliteFieldSyncTab extends ConsumerWidget {
 
                                 return DataRow(
                                   cells: [
-                                    // Colaborador
+                                    // Colaborador con Avatar Circular
                                     DataCell(
                                       SizedBox(
                                         width: colWorker,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        child: Row(
                                           children: [
-                                            Text(
-                                              rec.employeeName,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: const Color(0xFF0F172A),
+                                            Container(
+                                              width: 30,
+                                              height: 30,
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xFFCCFBF1),
+                                                shape: BoxShape.circle,
                                               ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                _getInitials(rec.employeeName),
+                                                style: GoogleFonts.inter(
+                                                  color: const Color(0xFF0F766E),
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 11,
+                                                ),
+                                              ),
                                             ),
-                                            const SizedBox(height: 2),
-                                            Text(
-                                              '${rec.employeeJobTitle} • ${rec.serviceLineCode}',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 10.5,
-                                                color: const Color(0xFF64748B),
-                                                fontWeight: FontWeight.w500,
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    rec.employeeName,
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 13,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: const Color(0xFF0F172A),
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  const SizedBox(height: 1),
+                                                  Text(
+                                                    '${rec.employeeJobTitle} • ${rec.serviceLineCode}',
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 10.5,
+                                                      color: const Color(0xFF64748B),
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
                                               ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ],
                                         ),
@@ -401,23 +432,20 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                           alignment: Alignment.centerLeft,
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
+                                              horizontal: 8,
+                                              vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFFF8FAFC),
+                                              color: const Color(0xFFF1F5F9),
                                               borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: const Color(0xFFE2E8F0),
-                                              ),
+                                                  BorderRadius.circular(20),
                                             ),
                                             child: Text(
                                               rec.assignedSite,
                                               style: GoogleFonts.inter(
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.w500,
-                                                color: const Color(0xFF334155),
+                                                color: const Color(0xFF475569),
                                               ),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -439,7 +467,7 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                           style: GoogleFonts.jetBrainsMono(
                                             fontSize: 11.5,
                                             fontWeight: FontWeight.w500,
-                                            color: const Color(0xFF475569),
+                                            color: const Color(0xFF64748B),
                                           ),
                                         ),
                                       ),
@@ -470,7 +498,7 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       ),
                                     ),
 
-                                    // Validación Geocerca
+                                    // Validación Geocerca (Pill cápsula)
                                     DataCell(
                                       SizedBox(
                                         width: colGeofence,
@@ -481,16 +509,15 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                             alignment: Alignment.centerLeft,
                                             child: Container(
                                               padding: const EdgeInsets.symmetric(
-                                                horizontal: 6,
-                                                vertical: 2,
+                                                horizontal: 10,
+                                                vertical: 4,
                                               ),
                                               decoration: BoxDecoration(
-                                                color: rec.geofenceStatus.badgeBgColor,
+                                                color: isWithin
+                                                    ? const Color(0xFFECFDF5)
+                                                    : const Color(0xFFFEF2F2),
                                                 borderRadius:
-                                                    BorderRadius.circular(4),
-                                                border: Border.all(
-                                                  color: rec.geofenceStatus.badgeBorderColor,
-                                                ),
+                                                    BorderRadius.circular(20),
                                               ),
                                               child: Row(
                                                 mainAxisSize: MainAxisSize.min,
@@ -499,16 +526,20 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                                     isWithin
                                                         ? Icons.check_circle_outline
                                                         : Icons.error_outline,
-                                                    size: 11,
-                                                    color: rec.geofenceStatus.badgeColor,
+                                                    size: 13,
+                                                    color: isWithin
+                                                        ? const Color(0xFF047857)
+                                                        : const Color(0xFFB91C1C),
                                                   ),
                                                   const SizedBox(width: 4),
                                                   Text(
                                                     rec.geofenceStatus.label,
                                                     style: GoogleFonts.inter(
-                                                      fontSize: 10.5,
+                                                      fontSize: 11,
                                                       fontWeight: FontWeight.w700,
-                                                      color: rec.geofenceStatus.badgeColor,
+                                                      color: isWithin
+                                                          ? const Color(0xFF047857)
+                                                          : const Color(0xFFB91C1C),
                                                     ),
                                                   ),
                                                 ],
@@ -519,7 +550,7 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       ),
                                     ),
 
-                                    // Método Captura (APK GPS Automático)
+                                    // Método Captura
                                     DataCell(
                                       SizedBox(
                                         width: colMethod,
@@ -533,44 +564,41 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                               children: [
                                                 Container(
                                                   padding: const EdgeInsets.symmetric(
-                                                    horizontal: 6,
-                                                    vertical: 2,
+                                                    horizontal: 9,
+                                                    vertical: 4,
                                                   ),
                                                   decoration: BoxDecoration(
                                                     color: const Color(0xFFF0FDFA),
                                                     borderRadius:
-                                                        BorderRadius.circular(4),
-                                                    border: Border.all(
-                                                      color: const Color(0xFF99F6E4),
-                                                    ),
+                                                        BorderRadius.circular(20),
                                                   ),
                                                   child: Text(
                                                     'APK GPS Automático',
                                                     style: GoogleFonts.inter(
-                                                      fontSize: 10,
+                                                      fontSize: 10.5,
                                                       fontWeight: FontWeight.w700,
-                                                      color: const Color(0xFF0D9488),
+                                                      color: const Color(0xFF0F766E),
                                                     ),
                                                   ),
                                                 ),
                                                 if (rec.isOfflineSync) ...[
                                                   const SizedBox(width: 4),
                                                   Tooltip(
-                                                    message: 'Captura guardada offline y sincronizada',
+                                                    message: 'Captura offline sincronizada',
                                                     child: Container(
-                                                      padding: const EdgeInsets.all(2),
+                                                      padding: const EdgeInsets.symmetric(
+                                                        horizontal: 6,
+                                                        vertical: 3,
+                                                      ),
                                                       decoration: BoxDecoration(
                                                         color: const Color(0xFFFFFBEB),
                                                         borderRadius:
-                                                            BorderRadius.circular(3),
-                                                        border: Border.all(
-                                                          color: const Color(0xFFFEF3C7),
-                                                        ),
+                                                            BorderRadius.circular(20),
                                                       ),
                                                       child: const Icon(
                                                         Icons.cloud_off_outlined,
-                                                        size: 11,
-                                                        color: Color(0xFFD97706),
+                                                        size: 12,
+                                                        color: Color(0xFFB45309),
                                                       ),
                                                     ),
                                                   ),
@@ -582,7 +610,7 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                       ),
                                     ),
 
-                                    // Telemetría GPS: Botón outline [ Icon(Icons.location_searching, size: 14) Detalle GPS ]
+                                    // Telemetría GPS: Botón cápsula minimalista
                                     DataCell(
                                       SizedBox(
                                         width: colTelemetry,
@@ -599,32 +627,32 @@ class EliteFieldSyncTab extends ConsumerWidget {
                                               ),
                                               icon: const Icon(
                                                 Icons.location_searching,
-                                                size: 14,
-                                                color: Color(0xFF0D9488),
+                                                size: 13,
+                                                color: Color(0xFF64748B),
                                               ),
                                               label: Text(
                                                 'Detalle GPS',
                                                 style: GoogleFonts.inter(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,
-                                                  color: const Color(0xFF0F766E),
+                                                  color: const Color(0xFF475569),
                                                 ),
                                               ),
                                               style: OutlinedButton.styleFrom(
                                                 side: const BorderSide(
-                                                  color: Color(0xFF99F6E4),
+                                                  color: Color(0xFFE2E8F0),
+                                                  width: 1,
                                                 ),
-                                                backgroundColor:
-                                                    const Color(0xFFF0FDFA),
+                                                backgroundColor: Colors.white,
                                                 elevation: 0,
                                                 padding: const EdgeInsets.symmetric(
-                                                  horizontal: 8,
+                                                  horizontal: 10,
                                                   vertical: 0,
                                                 ),
-                                                minimumSize: const Size(0, 28),
+                                                minimumSize: const Size(0, 30),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(5),
+                                                      BorderRadius.circular(8),
                                                 ),
                                               ),
                                             ),
